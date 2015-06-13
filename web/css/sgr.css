@@ -1,0 +1,42 @@
+p {
+    color: red;
+}
+
+vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+body {
+  background-image: url(../img/login_background.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: white;
+  padding-top: 70px;
+}
+
+.formbg {
+    background-image: url(../img/login_form_background.png);
+    background-repeat: repeat;
+    padding-top:20px;
+    padding-bottom:25px;
+    padding-left:-10px;
+    padding-right:-10px;
+   
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}

@@ -1,0 +1,196 @@
+
+.menu-list-body {
+
+
+background-color: #fff;
+border: 1px solid rgba(0, 0, 0, 0.15);
+border-radius: 4px;
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+float: left;
+font-size: 14px;
+left: 0;
+list-style: outside none none;
+margin: 2px 0 0;
+padding: 5px 0;
+text-align: left;
+min-height:fit-content;
+
+    
+}
+
+menu-list-body {
+
+background-color: #fff;
+border: 1px solid rgba(0, 0, 0, 0.15);
+border-radius: 4px;
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+float: left;
+font-size: 14px;
+left: 0;
+list-style: outside none none;
+margin: 2px 0 0;
+padding: 5px 0;
+text-align: left;
+min-height:fit-content;
+
+}
+
+.rf-sel-cntr {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    background-color: #fff;
+    border-color: #ccc;
+    color: #333;
+}
+
+rf-sel-cntr {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    background-color: #fff;
+    border-color: #ccc;
+    color: #333;
+}
+
+.rf-sel, textarea, input[type="text"], input[type="password"], select {
+    background: none;
+    background-color:transparent !important; 
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857; 
+}
+
+rf-sel, textarea, input[type="text"], input[type="password"], select {
+    background: none;
+    background-color:transparent !important;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857; 
+}
+
+.rf-sel {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857; 
+}
+
+rf-sel {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+}
+
+.rf-sel-opt {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+}
+
+rf-sel-opt {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+}
+
+.rf-sel-sel {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+}
+
+rf-sel-sel {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+}
+
+.rf-sel-btn {
+    background-color:transparent;
+    background:none;
+    border:0px;
+}
+
+rf-sel-btn {
+    background-color:transparent;
+    background:none;
+    border:0px;
+}
+
+.rf-sel-sel {
+    background-color:transparent;
+    background:none;
+}
+
+rf-sel-sel {
+    background-color:transparent;
+    background:none;
+}
+
+
+.rf-sel-lst-scrl {
+   
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;  
+    font-size: 14px;
+    left: 0;
+    list-style: outside none none;
+    margin: 2px 0 0;
+    min-width: fit-content;
+    padding: 5px 0;    
+    text-align: left;  
+    width:fit-content;
+}
+
+rf-sel-lst-scrl {
+   
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;  
+    font-size: 14px;
+    left: 0;
+    list-style: outside none none;
+    margin: 2px 0 0;
+    min-width: fit-content;
+    padding: 5px 0;    
+    text-align: left;  
+    width:fit-content;
+}
+
+
+.rf-sel-shdw-t, .rf-sel-shdw-b, .rf-sel-shdw-l, .rf-sel-shdw-r {
+    background:transparent;
+    border:0px;
+}
+
+.rf-sel-shdw {
+    border: 0px;
+    display: inline-block;
+    position: absolute;
+    padding: 0px;
+    left: 0px;
+}
+

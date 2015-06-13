@@ -1,0 +1,183 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+        <!-- Carrega Bootstrap e CSS Extra -->
+        <link href="css/bootstrap.css" rel="stylesheet"></link>
+        <link href="css/sgr.css" rel="stylesheet"></link>
+        <link href="css/font-awesome.min.css" rel="stylesheet"></link>
+
+        <!-- Carrega JQuery -->
+       
+        <script src="js/jquery.maskedinput.js"></script>
+
+        <!-- Carrega Plugins Avulsos -->		
+        <script src="js/bootstrap.js"></script>
+
+        <title>SGR | Cadastro</title>
+    </h:head>
+
+    <h:body>
+
+        <div class="container vertical-center">
+            <div class="row">    
+                <div class="panel panel-default">    
+                    <h:form id="signup-form">
+                        <div class="panel-body">
+                            <!-- Header -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 150px;"></img>
+                                </div>
+                                <div class="col-md-10">
+                                    <h3>Cadastro</h3>
+                                    <p><b>Olá cliente!</b><br></br> Ao se cadastrar em nosso restaurante você poderá aproveitar melhores recursos, descontos exclusivos e maior comodidade
+                                        sem perda de tempo!</p>
+
+                                </div>
+                            </div>
+                            <!-- / Header -->
+
+                            <!-- Form -->
+                            <div class="row" >                                
+                                <div class="col-md-6">
+                                    <h2 style="margin-left:15px;">Sobre Você</h2>
+                                    <div class="form-group col-xs-8">
+                                        <label for="name">Nome Completo</label>
+                                        <p:inputText id="clientName" type="text" class="form-control" value="#{clientController.clientBean.nome}"/>
+                                    </div>
+                                    <div class="form-group col-xs-4">                                        
+                                        <label for="birthdate">Data de Nascimento</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                            <p:inputMask mask="99/99/9999" id="clientBirthDate"  required="true" requiredMessage="O campo 'Data de Nascimento' é obrigatório."
+                                                          class="form-control" value="#{clientController.clientBean.data_nasc}" >
+                                                 <f:convertDateTime locale="pt_BR" dateStyle="long" pattern="dd/MM/yyyy" />
+                                            </p:inputMask>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label for="cpf">CPF</label>
+                                        <p:inputMask mask="999.999.999-99" id="clientCPF"  class="form-control" value="#{clientController.clientBean.cpf}"/>
+                                        <span id="helpBlock" class="help-block">Apenas números.</span>
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label for="RG">RG</label>
+                                        <p:inputMask mask="99.999.999-9" id="clientRG"  class="form-control" value="#{clientController.clientBean.rg}"/>
+                                        <span id="helpBlock" class="help-block">Apenas números</span>
+                                    </div>
+                                    <h2 style="margin-left:15px;">Contato</h2>
+                                    <div class="form-group col-xs-6">
+                                        <label for="homenumber">Telefone Residêncial</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-phone"></i></span>
+                                            <p:inputMask mask="(99)9999-9999" id="clientHomeNumber"  class="form-control" value="#{clientController.clientBean.tel_res}"/>
+                                        </div>
+                                        <span id="helpBlock" class="help-block">Apenas números</span>
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label for="mobilenumber">Telefone Celular</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-mobile-phone"></i></span>
+                                            <p:inputMask mask="(99)99999-9999" id="clientMobileNumber"  class="form-control" value="#{clientController.clientBean.tel_mov}"/>
+                                        </div>
+                                        <span id="helpBlock" class="help-block">Apenas números</span>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label for="email">E-mail</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-at"></i></span>
+                                            <p:inputText id="clientMail" type="text" class="form-control" value="#{clientController.clientBean.email}"/>                                           
+                                        </div>
+                                        <span id="helpBlock" class="help-block">Caso perca sua senha a mesma será enviada para este endereço.</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h2>Endereço</h2>
+                                    <div class="form-group col-xs-9">
+                                        <label for="address">Endereço</label>
+                                        <p:inputText id="clientAddress" type="text" class="form-control" value="#{clientController.clientBean.endereco}"/>
+                                    </div>
+                                    <div class="form-group col-xs-3">
+                                        <label for="addressnumber">Número</label>
+                                        <p:inputText id="clientAddressNumber" type="text" class="form-control" value="#{clientController.clientBean.numero}"/>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label for="addressref">Complemento</label>
+                                        <p:inputText id="clientAddressRef" type="text" class="form-control" value="#{clientController.clientBean.complemento}"/>
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="city">Cidade</label>
+                                        <p:inputText id="clientCity" type="text" class="form-control" value="#{clientController.clientBean.cidade}"/>
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="state">Estado</label>
+                                        <p:inputText id="clientState" type="text" class="form-control" value="#{clientController.clientBean.estado}"/>
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="neighborhood">Bairro</label>
+                                        <p:inputText id="clientNeighborhood" type="text" class="form-control" value="#{clientController.clientBean.bairro}"/>
+                                    </div>
+                                    <h2>Dados de Acesso</h2>
+                                    <div class="form-group col-xs-6">
+                                        <label for="username">Nome de Usuário</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+                                            <p:inputText id="clientUsername" type="text" class="form-control" value="#{clientController.clientBean.nome_usuario}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label for="password">Senha</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
+                                            <p:inputText id="clientPassword" type="password" class="form-control" value="#{clientController.clientBean.senha}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-footer">
+                            <h:commandButton type="button" class="btn btn-default" value="Cancelar" actionListener="#{clientController.goTo('/index.xhtml')}"/>
+
+                            <button type="button" data-toggle="modal" data-target="#signupFinalModal" class="btn btn-success" style="float:right;">Finalizar Cadastro</button>
+                        </div>
+
+                        <!-- # Modal SIGNUP -->
+                        <div class="modal fade" id="signupFinalModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-body">
+                                        <h4>Estamos quase lá!</h4>
+                                        <p>Obrigado pela paciência! Gostariamos de informar que seus dados de endereço serão utilizados futuramente por nosso sistema de delivery para chegar até você!
+                                            Seu e-mail estará seguro conosco e será utilizado para fins promocionais e para recuperação de sua senha. Se todos seus dados estiverem corretos por favor siga em frente!</p>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button><h:commandButton class="btn btn-success" value="Finalizar"  actionListener="#{clientController.salvarClient}"/></h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+    </h:body>
+
+</html>

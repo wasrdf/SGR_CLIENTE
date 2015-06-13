@@ -1,0 +1,149 @@
+ft-values {
+    
+    border-bottom: 1px solid #D45744;
+    padding:5px;
+    margin:3px;
+    margin-left:10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.ft-values {
+    
+    border-bottom: 1px solid #D45744;
+    padding:5px;
+    margin:3px;
+    margin-left:10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.navpainel-top {
+   border-top: 3px solid #D45744;
+}
+
+.navpainel-bottom {
+   border-bottom: 3px solid #D45744;
+}
+/*
+row-gap {
+    margin:3px;    
+}
+
+.row-gap {
+    margin:3px;    
+}
+
+row-gap-top {
+    margin-top:3px;    
+}
+
+.row-gap-top {
+    margin-top:3px;    
+}
+*/
+main-panels {
+    // background-image: url(../img/login_form_background.png);
+    // background-repeat: repeat;
+    background-color: #F8F8F8;
+    padding:10px;
+    margin:3px;    
+    width:100%;
+    min-width: 100%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.main-panels {
+    // background-image: url(../img/login_form_background.png);
+    // background-repeat: repeat; 
+    background-color: #F8F8F8;
+    padding:10px;
+    margin:3px;
+    width:100%;
+    min-width: 100%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+sub-panels {
+    background-image: url(../img/login_form_background.png);
+    background-repeat: repeat;
+    padding:5px;
+    padding-left:20px;
+    padding-right:20px;
+     
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.sub-panels {
+    background-image: url(../img/login_form_background.png);
+    background-repeat: repeat;
+    padding:5px;
+    padding-left:20px;
+    padding-right:20px;
+   
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+    border-style: none;
+}
+
+ui-datatable thead th, ui-datatable tbody td, ui-datatable tfoot td {
+    border-style: none;
+}
+
+.panel-title {
+    font-size:20px;
+    font-weight: bold;
+}
+panel-title {
+    font-size:20px;
+    font-weight: bold;
+}
+
+panel-icon {
+    color:#D45744;
+    margin-right:5px;
+    margin-top:5px;
+}
+
+.panel-icon {
+    color:#D45744;
+    margin-right:5px;
+    margin-top:5px;
+}
+
+.panel-title-divider {
+    border-bottom: 1px solid #D45744;
+    
+}
+
+panel-title-divider {
+    border-bottom: 1px solid #D45744;    
+}
+
+.panel-image-full {
+    border-top: 3px solid #D45744;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    
+}
+
+panel-image-full {
+    border-top: 3px solid #D45744;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
