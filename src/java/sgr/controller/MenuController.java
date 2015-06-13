@@ -77,12 +77,12 @@ public class MenuController {
             }
         }
  
-       tableBean.setNumero(clientLogado.getTableBean().getNumero());
+       if(itemStatus == true) {
+       tableBean.setNumero(clientLogado.tableBean.getNumero());
+       
        tableBean.setFlag("Solicitado");
        
        
-       if(itemStatus == true) {
-             
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
            
        } else {
@@ -162,8 +162,8 @@ public class MenuController {
         
     
         MovimentoService movimentoService = new MovimentoService();
-                //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
-         clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(),clientLogado.getTableBean().getNumero());
+        //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
+        clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(),clientLogado.getTableBean().getNumero());
 
         try {
             clientLogado.goTo("/mainclient.xhtml");

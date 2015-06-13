@@ -126,7 +126,9 @@
                     </div>
                     <div class="modal-footer">
 
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button> <h:form><h:commandButton class="btn btn-primary" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
+                         <h:form>
+                             <p:commandButton class="btn btn-default" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
+                             <p:commandButton class="btn btn-primary" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
 
                     </div>
                 </div>
@@ -242,13 +244,13 @@
                             </div>
                         </div>
                         <div class="row clearfix">
-                            <div class="col-md-12 column">
+                            <div class="col-md-10 column">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Populares</h3>
+                                        <h3 class="panel-title">Avisos</h3>
                                     </div>
-                                    <div class="panel-body">
-                                        -
+                                    <div  class="panel-body">
+                                   <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +298,7 @@
 
 
                 </h:panelGrid >
-                <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+               
             </h:panelGrid>
             <!-- [I] Footer -->
 
@@ -313,9 +315,7 @@
                 </ul>
 
                 <!-- [I] Funções de Conta -->
-                <ul >
-                    <li > <p:messages  showDetail="true" autoUpdate="false" closable="true"  /></li>
-                </ul>
+               
                 <ul class="nav navbar-nav navbar-right">
                     <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
                      
