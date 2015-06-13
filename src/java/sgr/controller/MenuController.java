@@ -12,9 +12,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import sgr.bean.ItemBean;
 import sgr.bean.MovimentoBean;
 
@@ -62,6 +64,33 @@ public class MenuController {
         setItemList(itemService.listItems(selectedItemType));
 
     }
+    
+    public void solicitarEncerramento() {
+       TableDAO tableDAO = new TableDAO();
+       boolean itemStatus = false;
+        System.out.println("TAMANHO DA LISTA PEDIDOS:" + clientLogado.listaMovimento.size());
+        for (int i = 0; i < clientLogado.listaMovimento.size(); i++) {
+            if((clientLogado.listaMovimento.get(i).getItemStatus().equals("Solicitado")) || (clientLogado.listaMovimento.get(i).getItemStatus().equals("Pronto"))) {
+                itemStatus = false;
+            } else {
+                itemStatus = true;
+            }
+        }
+ 
+       tableBean.setNumero(clientLogado.getTableBean().getNumero());
+       tableBean.setFlag("Solicitado");
+       
+       
+       if(itemStatus == true) {
+             
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
+           
+       } else {
+           
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
+       }
+   
+    }
 
     public void showSelectedTypeItems() throws ExceptionDAO {
 
@@ -103,22 +132,15 @@ public class MenuController {
         contaItemBean.setClienteCpf(clientLogado.getClientBean().getCpf());
         contaItemBean.setMesaNumero(clientLogado.getTableBean().getNumero());
         tableBean.setNumero(clientLogado.getTableBean().getNumero());
-        System.out.println("mesa11111111:" + tableBean.getNumero());
+ 
         tableBean.setStatus(true);
         TableDAO tableDAO = new TableDAO();
-        tableDAO.ocuparMesa(tableBean);
- 
-      
-        
+        tableDAO.gerenciarMesas(tableBean);
         System.out.println("MESA FUNCIONARIO_CODIGO:" + clientLogado.getTableBean().getFuncionarioCodigo());
         System.out.println("MESA FUNCIONARIO_CPF:" + clientLogado.getTableBean().getFuncionarioCpf());
-       
-        
         contaItemBean.setFuncionarioCodigo(clientLogado.getTableBean().getFuncionarioCodigo());
         contaItemBean.setFuncionarioCpf(clientLogado.getTableBean().getFuncionarioCpf());
-        
         contaItemBean.setData(new Date());
-        
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         System.out.println("Iniciando Pedido Item");
         System.out.println("PEDIDO NUMERO MESA: " + contaItemBean.getMesaNumero());

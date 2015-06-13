@@ -28,7 +28,16 @@ public class ClientBean {
     private String nome_usuario;
     private String senha;
     private String situacao;
+    private String cep;
 
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+    
     public String getSituacao() {
         return situacao;
     }

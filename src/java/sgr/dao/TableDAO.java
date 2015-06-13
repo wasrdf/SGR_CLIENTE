@@ -43,6 +43,7 @@ public class TableDAO {
             tableBean.setStatus(rs.getBoolean("status"));
             tableBean.setFuncionarioCodigo(rs.getInt("funcionario_codigo"));
             tableBean.setFuncionarioCpf(rs.getString("funcionario_cpf"));
+            tableBean.setFlag(rs.getString("flag"));
             
             System.out.println("[TABLE DAO] Data fetched from SQL result: Numero '" + tableBean.getNumero() + "', Capacidade '"
             + tableBean.getCapacidade() + "', Identificador '" + tableBean.getIdentificador() + "', Status '" + tableBean.isStatus() + "'.");
@@ -58,28 +59,26 @@ public class TableDAO {
        
     }
     
-     public void ocuparMesa(TableBean pTableBean)  {
+     public boolean gerenciarMesas(TableBean pTableBean)  {
         ConnectionBuilder conexao = new ConnectionBuilder();
         Connection conn = null;
         try {
-            conn = conexao.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String sql = "update mesa set status = ? where numero=?";
+        conn = conexao.getConnection();
+        String sql = "update mesa set status = ?,flag = ? where numero=?";
         System.out.println(sql);
         PreparedStatement ps;
-        try {
-            ps = conn.prepareStatement(sql);
+        ps = conn.prepareStatement(sql);
         ps.setBoolean(1, pTableBean.isStatus());
-        ps.setInt(2, pTableBean.getNumero());
+        ps.setString(2, pTableBean.getFlag());
+        ps.setInt(3, pTableBean.getNumero());
         ps.execute();
         ps.close();
         conn.close();
-    
+        return true;
          } catch (SQLException ex) {
             Logger.getLogger(TableDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        return false;
+         }
        
         }
     

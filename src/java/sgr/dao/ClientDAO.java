@@ -51,6 +51,7 @@ public class ClientDAO {
             clientBean.setEmail(rs.getString("email"));
             clientBean.setNome_usuario(rs.getString("nome_usuario"));
             clientBean.setSenha(rs.getString("senha"));
+            clientBean.setCep(rs.getString("cep"));
 
             System.out.println("[CLIENT DAO] Data fetched from SQL result: Codigo '" + clientBean.getCodigo() + "', Nome '" + clientBean.getNome() + "', Data Nasc. '"
                     + clientBean.getData_nasc() + "', Endereço '" + clientBean.getEndereco() + "', Numero '" + clientBean.getNumero() + "', Complemento '" + clientBean.getComplemento()
@@ -76,7 +77,7 @@ public class ClientDAO {
 
         String sql = "UPDATE cliente SET endereco=?,numero=?,complemento=?,"
                 + "cidade=?,bairro=?,estado=?,tel_residencial=?,tel_movel=?,"
-                + "email=?,situacao=?,senha=? where codigo=?";
+                + "email=?,situacao=?,senha=?,cep=? where codigo=?";
         System.out.println(pClient.getEndereco());
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, pClient.getEndereco());
@@ -90,7 +91,8 @@ public class ClientDAO {
         ps.setString(9, pClient.getEmail());
         ps.setString(10, pClient.getSituacao());
         ps.setString(11, pClient.getSenha());
-        ps.setInt(12, pClient.getCodigo());
+        ps.setString(12, pClient.getCep());
+        ps.setInt(13, pClient.getCodigo());
         ps.execute();
         ps.close();
         conn.close();
@@ -101,7 +103,7 @@ public class ClientDAO {
         Connection conn = conexao.getConnection();
 
         String sql = "insert into cliente (nome,data_nasc,endereco,numero,complemento,cidade,bairro,"
-                + "estado,cpf,rg,tel_residencial,tel_movel,email,nome_usuario,senha,situacao) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "estado,cpf,rg,tel_residencial,tel_movel,email,nome_usuario,senha,situacao,cep) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = conn.prepareStatement(sql);
 
         ps.setString(1, pCliente.getNome());
@@ -120,6 +122,7 @@ public class ClientDAO {
         ps.setString(14, pCliente.getNome_usuario());
         ps.setString(15, pCliente.getSenha());
         ps.setString(16, "Ativo");
+        ps.setString(17, pCliente.getCep());
         ps.execute();
         ps.close();
         conn.close();

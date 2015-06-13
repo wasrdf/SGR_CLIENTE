@@ -313,11 +313,16 @@
                 </ul>
 
                 <!-- [I] Funções de Conta -->
+                <ul >
+                    <li > <p:messages  showDetail="true" autoUpdate="false" closable="true"  /></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><button type="button" class="btn btn-danger" style="margin-top:7px;">Encerrar Conta</button></li>
+                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
+                     
                 </ul>
 
             </div>
+             
         </nav>
 
 

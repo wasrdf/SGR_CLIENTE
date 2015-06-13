@@ -17,7 +17,7 @@ public class TableBean {
     private boolean status;
     private int funcionarioCodigo;
     private String funcionarioCpf;
-    private String frag;
+    private String flag;
 
     public int getNumero() {
         return numero;
@@ -67,14 +67,12 @@ public class TableBean {
         this.funcionarioCpf = funcionarioCpf;
     }
 
-    public String getFrag() {
-        return frag;
+    public String getFlag() {
+        return flag;
     }
 
-    public void setFrag(String frag) {
-        this.frag = frag;
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
-    
-    
 }

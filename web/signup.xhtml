@@ -16,7 +16,7 @@
         <link href="css/font-awesome.min.css" rel="stylesheet"></link>
 
         <!-- Carrega JQuery -->
-       
+
         <script src="js/jquery.maskedinput.js"></script>
 
         <!-- Carrega Plugins Avulsos -->		
@@ -52,25 +52,29 @@
                                     <h2 style="margin-left:15px;">Sobre Você</h2>
                                     <div class="form-group col-xs-8">
                                         <label for="name">Nome Completo</label>
+                                        <span style="color: red">* </span>
                                         <p:inputText id="clientName" type="text" class="form-control" value="#{clientController.clientBean.nome}"/>
                                     </div>
                                     <div class="form-group col-xs-4">                                        
                                         <label for="birthdate">Data de Nascimento</label>
+                                        <span style="color: red">* </span>
                                         <div class="input-group">
                                             <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
                                             <p:inputMask mask="99/99/9999" id="clientBirthDate"  required="true" requiredMessage="O campo 'Data de Nascimento' é obrigatório."
-                                                          class="form-control" value="#{clientController.clientBean.data_nasc}" >
-                                                 <f:convertDateTime locale="pt_BR" dateStyle="long" pattern="dd/MM/yyyy" />
+                                                         class="form-control" value="#{clientController.clientBean.data_nasc}" >
+                                                <f:convertDateTime locale="pt_BR" dateStyle="long" pattern="dd/MM/yyyy" />
                                             </p:inputMask>
                                         </div>
                                     </div>
                                     <div class="form-group col-xs-6">
                                         <label for="cpf">CPF</label>
+                                        <span style="color: red">* </span>
                                         <p:inputMask mask="999.999.999-99" id="clientCPF"  class="form-control" value="#{clientController.clientBean.cpf}"/>
                                         <span id="helpBlock" class="help-block">Apenas números.</span>
                                     </div>
                                     <div class="form-group col-xs-6">
                                         <label for="RG">RG</label>
+                                        <span style="color: red">* </span>
                                         <p:inputMask mask="99.999.999-9" id="clientRG"  class="form-control" value="#{clientController.clientBean.rg}"/>
                                         <span id="helpBlock" class="help-block">Apenas números</span>
                                     </div>
@@ -93,20 +97,29 @@
                                     </div>
                                     <div class="form-group col-xs-12">
                                         <label for="email">E-mail</label>
+                                        <span style="color: red">* </span>
                                         <div class="input-group">
                                             <span class="input-group-addon" id="basic-addon1"><i class="fa fa-at"></i></span>
                                             <p:inputText id="clientMail" type="text" class="form-control" value="#{clientController.clientBean.email}"/>                                           
                                         </div>
                                         <span id="helpBlock" class="help-block">Caso perca sua senha a mesma será enviada para este endereço.</span>
                                     </div>
+                                    <span id="helpBlock" style="color: red" class="help-block">Os campos marcados com * são obrigatórios</span>   
+
                                 </div>
 
                                 <div class="col-md-6">
                                     <h2>Endereço</h2>
+                                    <div class="form-group col-xs-4">
+                                        <label for="address">CEP</label>
+                                        <p:inputMask mask="99999-999" id="clientAddress"  class="form-control" value="#{clientController.clientBean.cep}"/>
+                                    </div>
+
                                     <div class="form-group col-xs-9">
                                         <label for="address">Endereço</label>
                                         <p:inputText id="clientAddress" type="text" class="form-control" value="#{clientController.clientBean.endereco}"/>
                                     </div>
+
                                     <div class="form-group col-xs-3">
                                         <label for="addressnumber">Número</label>
                                         <p:inputText id="clientAddressNumber" type="text" class="form-control" value="#{clientController.clientBean.numero}"/>
@@ -127,25 +140,35 @@
                                         <label for="neighborhood">Bairro</label>
                                         <p:inputText id="clientNeighborhood" type="text" class="form-control" value="#{clientController.clientBean.bairro}"/>
                                     </div>
-                                    <h2>Dados de Acesso</h2>
-                                    <div class="form-group col-xs-6">
-                                        <label for="username">Nome de Usuário</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-                                            <p:inputText id="clientUsername" type="text" class="form-control" value="#{clientController.clientBean.nome_usuario}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-xs-6">
-                                        <label for="password">Senha</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
-                                            <p:inputText id="clientPassword" type="password" class="form-control" value="#{clientController.clientBean.senha}"/>
-                                        </div>
+
+                                </div>
+                                <h2>Dados de Acesso</h2>
+                                <div class="form-group col-xs-2">
+                                    <label for="username">Nome de Usuário</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+                                        <p:inputText id="clientUsername" type="text" class="form-control" value="#{clientController.clientBean.nome_usuario}"/>
                                     </div>
                                 </div>
+                                <div class="form-group col-xs-2">
+                                    <label for="password">Senha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
+                                        <p:inputText id="clientPassword" type="password" class="form-control" value="#{clientController.clientBean.senha}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-2">
+                                    <label for="password">Confirmação de Senha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
+                                        <p:inputText id="clientPassword" type="password" class="form-control" value="#{clientController.clientBean.senha}"/>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                        
+
                         <div class="panel-footer">
                             <h:commandButton type="button" class="btn btn-default" value="Cancelar" actionListener="#{clientController.goTo('/index.xhtml')}"/>
 
@@ -171,7 +194,7 @@
                         </div>
 
                     </h:form>
-                    
+
                 </div>
             </div>
         </div>
