@@ -44,6 +44,7 @@ public class TableDAO {
             tableBean.setFuncionarioCodigo(rs.getInt("funcionario_codigo"));
             tableBean.setFuncionarioCpf(rs.getString("funcionario_cpf"));
             tableBean.setFlag(rs.getString("flag"));
+            tableBean.setFlagGarcom(rs.getString("flag_garcom"));
             
             System.out.println("[TABLE DAO] Data fetched from SQL result: Numero '" + tableBean.getNumero() + "', Capacidade '"
             + tableBean.getCapacidade() + "', Identificador '" + tableBean.getIdentificador() + "', Status '" + tableBean.isStatus() + "'.");
@@ -64,13 +65,14 @@ public class TableDAO {
         Connection conn = null;
         try {
         conn = conexao.getConnection();
-        String sql = "update mesa set status = ?,flag = ? where numero=?";
+        String sql = "update mesa set status = ?,flag = ?,flag_garcom=? where numero=?";
         System.out.println(sql);
         PreparedStatement ps;
         ps = conn.prepareStatement(sql);
         ps.setBoolean(1, pTableBean.isStatus());
         ps.setString(2, pTableBean.getFlag());
-        ps.setInt(3, pTableBean.getNumero());
+        ps.setString(3, pTableBean.getFlagGarcom());
+        ps.setInt(4, pTableBean.getNumero());
         ps.execute();
         ps.close();
         conn.close();

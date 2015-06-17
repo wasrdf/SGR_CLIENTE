@@ -31,11 +31,7 @@
     </h:head>
 
     <h:body>
-        <p:dialog style="margin-left: 48%;margin-top: 20%" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-            <img src="img/ajax-loader.gif" class="img-responsive"></img>	
-        </p:dialog>
-        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-
+       
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -126,9 +122,9 @@
                     </div>
                     <div class="modal-footer">
 
-                         <h:form>
-                             <p:commandButton class="btn btn-default" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
-                             <p:commandButton class="btn btn-primary" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
+                        <h:form>
+                            <p:commandButton class="btn btn-default" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
+                            <p:commandButton class="btn btn-primary" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
 
                     </div>
                 </div>
@@ -167,164 +163,168 @@
                             <div class="panel-body">
                                 <div class="row clearfix">
                                     <div class="table-responsive">
-                                        <p:dataTable paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
+                                        
+                                          
+                                         <!--aqui em atualizo a lista em 30 em 30 seg-->
+                                          <p:poll interval="30" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
+                                          
+
+                                          <p:dataTable paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
 
 
-                                            <p:column headerText="Item">
-                                                <h:outputText value="#{movimento.item}" />
-                                            </p:column>
+                                          <p:column headerText="Item">
+                                          <h:outputText value="#{movimento.item}" />
+                                          </p:column>
 
-                                            <p:column headerText="Quantidade">
-                                                <h:outputText value="#{movimento.quantidade}" />
-                                            </p:column>  
+                                          <p:column headerText="Quantidade">
+                                          <h:outputText value="#{movimento.quantidade}" />
+                                          </p:column>  
 
-                                            <p:column headerText="Preço">
-                                                <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" >
-                                                    <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
-                                                </p:outputLabel>
-                                            </p:column>    
-
-
-                                            <p:column  sortBy="#{movimento.itemStatus}" headerText="Status do Item">
-
-                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Solicitado')}"  >
-                                                    <h:outputText style="color: red;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />
-                                                </p:outputPanel>
-
-                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Pronto')}" >
-                                                    <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                                                </p:outputPanel>
-
-                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
-                                                    <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                                                </p:outputPanel>
-                                            </p:column>
+                                          <p:column headerText="Preço">
+                                          <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" >
+                                          <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
+                                          </p:outputLabel>
+                                          </p:column>    
 
 
-                                        </p:dataTable>
-                                    </div>
-                                </div>
-                            </div>
+                                          <p:column  sortBy="#{movimento.itemStatus}" headerText="Status do Item">
 
-                            <div class="panel-footer">
-                                <p:commandButton update="movimento" class="btn btn-default" type="button" value="Chamar Garçom" />
-                                <p:commandButton update="movimento" class="btn btn-default" type="button" value="Solicitar Cancelamento" />
-                                <p:commandButton update="movimento" class="btn btn-default" value="Atualizar Pedido" actionListener="#{clientController.recarregarMovimentos()}"  />
+                                          <p:outputPanel rendered="#{movimento.itemStatus.equals('Solicitado')}"  >
+                                          <h:outputText style="color: red;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />
+                                          </p:outputPanel>
 
-                                <span> Total: 0,00 </span>
+                                          <p:outputPanel rendered="#{movimento.itemStatus.equals('Pronto')}" >
+                                          <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                          </p:outputPanel>
 
-                            </div>
-
-                        </div>
-
-                        <!-- [I][P] Painel Direito -->    
-                    </div>
-                    <div id="abId0.5800432859169298" class="col-md-6 column">
-                        <div class="row clearfix">
-
-                            <div class="col-md-6 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Recomendações</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        -
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Promoções</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        -
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row clearfix">
-                            <div class="col-md-10 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Avisos</h3>
-                                    </div>
-                                    <div  class="panel-body">
-                                   <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>                
-        </h:form>
-        <!-- -->   
-
-        <!--Formulario pedido detalhe-->
-        <h:form id="frmDetalhe" rendered="#{clientController.tela == 1}" >
-
-            <h:panelGrid width="70%" style="background-color: #F8F8F8;opacity:0.76;-moz-opacity: 0.65;filter: alpha(opacity=65);text-align: center;margin-left: 40px;margin-top: 5%"  >
-
-                <p:separator/>
-                <h3>Detalhes do pedido </h3><br/>
-
-                <h:panelGrid columns="2">
-
-                    <h:outputLabel  value="Produto:  " style="margin-left: 10px" />
-                    <p:outputLabel value="#{clientController.movimento.item}"  style="margin-left: 10px" />
-
-                </h:panelGrid>
-
-                <h:panelGrid columns="2">
-
-                    <h:outputLabel  value="Preço:  " style="margin-left: 10px" />
-                    <p:outputLabel value="#{clientController.movimento.preco}"  style="margin-left: 10px" >
-                        <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
-                    </p:outputLabel>
-
-                </h:panelGrid>  
-
-                <h:panelGrid columns="2">
-                    <h:outputLabel  value="Status do produto:  " style="margin-left: 10px" />
-                    <p:outputLabel value="#{clientController.movimento.itemStatus}"  style="margin-left: 10px" />
-                </h:panelGrid>
-
-                <!-- [I] Funções de Conta -->
-                <h:panelGrid columns="2">
-                    <p:commandButton  immediate="true" ajax="true"  action="#{clientController.salvarClient()}" class="btn btn-default" value="Salvar"  />
-
-                    <p:commandButton update=":frmPrincipal :frmDetalhe" ajax="false" class="btn btn-default" value="Voltar" style="float:right;" actionListener="#{clientController.mudarTela(0)}"/>
+                                          <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
+                                          <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                          </p:outputPanel>
+                                          </p:column>
 
 
-                </h:panelGrid >
-               
-            </h:panelGrid>
-            <!-- [I] Footer -->
+                                          </p:dataTable>
+                                          </div>
+                                          </div>
+                                          </div>
 
-            <!-- [M] Modal -->
-        </h:form>
+                                          <div class="panel-footer">
+                                          <p:commandButton ajax="false"  class="btn btn-default" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
+                                          <p:commandButton update="movimento" class="btn btn-default" type="button" value="Solicitar Cancelamento" />
+                                          
+                                          <span> Total: 0,00 </span>
 
-        <nav class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container">
+                                          </div>
 
-                <!-- [F] Informações de Conta e Pedidos -->
-                <ul class="nav navbar-nav">
-                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> #{clientController.listaMovimento.size()}</span></p></li>
-                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ 00,00</span></p></li>
-                </ul>
+                                          </div>
 
-                <!-- [I] Funções de Conta -->
-               
-                <ul class="nav navbar-nav navbar-right">
-                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
-                     
-                </ul>
+                                          <!-- [I][P] Painel Direito -->    
+                                          </div>
+                                          <div id="abId0.5800432859169298" class="col-md-6 column">
+                                          <div class="row clearfix">
 
-            </div>
-             
-        </nav>
+                                          <div class="col-md-6 column">
+                                          <div class="panel panel-default">
+                                          <div class="panel-heading">
+                                          <h3 class="panel-title">Recomendações</h3>
+                                          </div>
+                                          <div class="panel-body">
+                                          -
+                                          </div>
+                                          </div>
+                                          </div>
+                                          <div class="col-md-6 column">
+                                          <div class="panel panel-default">
+                                          <div class="panel-heading">
+                                          <h3 class="panel-title">Promoções</h3>
+                                          </div>
+                                          <div class="panel-body">
+                                          -
+                                          </div>
+                                          </div>
+                                          </div>
+                                          </div>
+                                          <div class="row clearfix">
+                                          <div class="col-md-10 column">
+                                          <div class="panel panel-default">
+                                          <div class="panel-heading">
+                                          <h3 class="panel-title">Avisos</h3>
+                                          </div>
+                                          <div  class="panel-body">
+                                          <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+                                          </div>
+                                          </div>
+                                          </div>
+                                          </div>
+                                          </div>
+                                          </div>
+                                          </div>                
+                                          </h:form>
+                                          <!-- -->   
 
+                                          <!--Formulario pedido detalhe-->
+                                          <h:form id="frmDetalhe" rendered="#{clientController.tela == 1}" >
+
+                                          <h:panelGrid width="70%" style="background-color: #F8F8F8;opacity:0.76;-moz-opacity: 0.65;filter: alpha(opacity=65);text-align: center;margin-left: 40px;margin-top: 5%"  >
+
+                                          <p:separator/>
+                                          <h3>Detalhes do pedido </h3><br/>
+
+                                          <h:panelGrid columns="2">
+
+                                          <h:outputLabel  value="Produto:  " style="margin-left: 10px" />
+                                          <p:outputLabel value="#{clientController.movimento.item}"  style="margin-left: 10px" />
+
+                                          </h:panelGrid>
+
+                                          <h:panelGrid columns="2">
+
+                                          <h:outputLabel  value="Preço:  " style="margin-left: 10px" />
+                                          <p:outputLabel value="#{clientController.movimento.preco}"  style="margin-left: 10px" >
+                                          <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
+                                          </p:outputLabel>
+
+                                          </h:panelGrid>  
+
+                                          <h:panelGrid columns="2">
+                                          <h:outputLabel  value="Status do produto:  " style="margin-left: 10px" />
+                                          <p:outputLabel value="#{clientController.movimento.itemStatus}"  style="margin-left: 10px" />
+                                          </h:panelGrid>
+
+                                          <!-- [I] Funções de Conta -->
+                                          <h:panelGrid columns="2">
+                                          <p:commandButton  immediate="true" ajax="true"  action="#{clientController.salvarClient()}" class="btn btn-default" value="Salvar"  />
+
+                                          <p:commandButton update=":frmPrincipal :frmDetalhe" ajax="false" class="btn btn-default" value="Voltar" style="float:right;" actionListener="#{clientController.mudarTela(0)}"/>
+
+
+                                          </h:panelGrid >
+
+                                          </h:panelGrid>
+                                          <!-- [I] Footer -->
+
+                                          <!-- [M] Modal -->
+                                          </h:form>
+
+                                          <nav class="navbar navbar-default navbar-fixed-bottom">
+                                          <div class="container">
+
+                                          <!-- [F] Informações de Conta e Pedidos -->
+                                          <ul class="nav navbar-nav">
+                                          <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> #{clientController.listaMovimento.size()}</span></p></li>
+                                          <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ #{menuController.contaTotal}</span></p></li>
+                                          </ul>
+
+                                          <!-- [I] Funções de Conta -->
+
+                                          <ul class="nav navbar-nav navbar-right">
+                                          <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
+
+                                          </ul>
+
+                                          </div>
+
+                                          </nav>
 
 
 
@@ -332,6 +332,7 @@
 
 
 
-    </h:body>
 
-</html>
+                                          </h:body>
+
+                                          </html>

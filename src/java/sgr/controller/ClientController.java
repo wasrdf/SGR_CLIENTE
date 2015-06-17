@@ -91,9 +91,13 @@ public class ClientController {
         //currentMac = MACReader.readMAC();
         System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
         System.out.println("MINHA MAC = :" + currentMac);
-
-        currentMac = "94-DE-80-70-D9-15";
-
+        
+        //mesa 7
+        //currentMac = "94-DE-80-70-D9-15";
+        //mesa 12
+        //currentMac = "F4-6D-04-90-90-FA";
+        //mesa 5
+        currentMac = "68-17-29-0B-87-6D";
         listTable = tableService.doTableSearch(currentMac);
         tableBean = listTable.get(0);
         System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
@@ -185,6 +189,7 @@ public class ClientController {
     }
 
     public void recarregarMovimentos() {
+        System.out.println("primeiro");
         MovimentoService movimentoService = new MovimentoService();
         listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
         System.out.println("tamanho da lista: " + listaMovimento.size());
@@ -210,7 +215,7 @@ public class ClientController {
             s.invalidate();
             FacesContext ctx = FacesContext.getCurrentInstance();
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+                 FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
             } catch (IOException ex) {
                 Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -218,7 +223,7 @@ public class ClientController {
 
             for (int i = 0; i < listaMovimento.size(); i++) {
 
-                if (listaMovimento.get(i).getItemStatus().equals("Entregue")) {
+                if ((listaMovimento.get(i).getItemStatus().equals("Entregue")) && sessionBean.isStatus() == false)  {
                     contaStatus = true;
                 } else {
 

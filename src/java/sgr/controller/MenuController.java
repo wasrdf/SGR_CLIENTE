@@ -19,7 +19,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import sgr.bean.ItemBean;
 import sgr.bean.MovimentoBean;
-
 import sgr.bean.ContaItemBean;
 import sgr.bean.TableBean;
 import sgr.dao.ExceptionDAO;
@@ -27,6 +26,7 @@ import sgr.dao.TableDAO;
 import sgr.service.ItemService;
 import sgr.service.MovimentoService;
 import sgr.service.ContaItemService;
+import sgr.service.TableService;
 
 @SessionScoped
 @ManagedBean(name = "menuController")
@@ -45,14 +45,14 @@ public class MenuController {
     // Beans
     private ItemBean orderBuilderItem = new ItemBean();
     private TableBean tableBean = new TableBean();
+    private double valorTotal;
+    private double contaTotal;
 
     private ContaItemBean contaItemBean = new ContaItemBean();
     // Lists
     private List<ItemBean> itemTypes = new ArrayList<ItemBean>();
     private List<ItemBean> itemList = new ArrayList<ItemBean>();
-    // private List<OrderBuilderBean> orderBuilderList = new ArrayList<OrderBuilderBean>();
     private List<ItemBean> orderBuilderList = new ArrayList<ItemBean>();
-
     private List<MovimentoBean> listaMovimento = new ArrayList<MovimentoBean>();
 
     // Inicia Services
@@ -68,7 +68,7 @@ public class MenuController {
     public void solicitarEncerramento() {
        TableDAO tableDAO = new TableDAO();
        boolean itemStatus = false;
-        System.out.println("TAMANHO DA LISTA PEDIDOS:" + clientLogado.listaMovimento.size());
+        System.out.println("STATUS DA CONTA:" + clientLogado.getSessionBean().isStatus());
         for (int i = 0; i < clientLogado.listaMovimento.size(); i++) {
             if((clientLogado.listaMovimento.get(i).getItemStatus().equals("Solicitado")) || (clientLogado.listaMovimento.get(i).getItemStatus().equals("Pronto"))) {
                 itemStatus = false;
@@ -78,12 +78,13 @@ public class MenuController {
         }
  
        if(itemStatus == true) {
+      
        tableBean.setNumero(clientLogado.tableBean.getNumero());
-       
        tableBean.setFlag("Solicitado");
+       tableDAO.gerenciarMesas(tableBean);
        
        
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
+       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
            
        } else {
            
@@ -101,12 +102,17 @@ public class MenuController {
     public void clearOrderBuilder() {
         orderBuilderList.clear();
         System.out.println("Pedido Limpado.");
+        valorTotal = 0.00;
     }
 
     public void addOrderItem(ItemBean pItem) throws ExceptionDAO {
         orderBuilderItem = pItem;
+        //valorTotal = 0.00;
         System.out.println("ITEM SELECIONADO: " + orderBuilderItem.getNome());
         orderBuilderList.add(orderBuilderItem);
+        for (int i = 0; i < orderBuilderList.size(); i++) {
+            valorTotal = valorTotal + (orderBuilderList.get(i).getPreco() * orderBuilderList.get(i).getQuantidade());
+        }
     }
 
     // <editor-fold desc="GET and SET">
@@ -114,7 +120,15 @@ public class MenuController {
         // orderBuilderItem.setQuantidade(0);
         orderBuilderItem = pItem;
         orderBuilderList.remove(orderBuilderItem);
-
+        valorTotal = valorTotal - (pItem.getPreco() * pItem.getQuantidade());
+    }
+    
+    public void chamarGarcom() {
+        TableDAO tableDAO = new TableDAO();
+        tableBean.setNumero(clientLogado.tableBean.getNumero());
+        tableBean.setFlagGarcom("SOLICITADO");
+        tableDAO.gerenciarMesas(tableBean);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação enviada para o garçom,em breve iremos atende-lo", ""));
     }
 
     public void buildOrder() {
@@ -134,6 +148,7 @@ public class MenuController {
         tableBean.setNumero(clientLogado.getTableBean().getNumero());
  
         tableBean.setStatus(true);
+        
         TableDAO tableDAO = new TableDAO();
         tableDAO.gerenciarMesas(tableBean);
         System.out.println("MESA FUNCIONARIO_CODIGO:" + clientLogado.getTableBean().getFuncionarioCodigo());
@@ -160,7 +175,7 @@ public class MenuController {
             orderItemService.salvarPedidoItem(contaItemBean);
         }
         
-    
+        contaTotal = contaTotal + valorTotal;
         MovimentoService movimentoService = new MovimentoService();
         //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
         clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(),clientLogado.getTableBean().getNumero());
@@ -172,6 +187,10 @@ public class MenuController {
         }
     }
 
+    public void atualizarValorTotal(){
+        System.out.println("Ola");
+    }
+    
     public void refleshPedidoGrid() {
         MovimentoService movimentoService = new MovimentoService();
         //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
@@ -283,4 +302,21 @@ public class MenuController {
         this.listaMovimento = listaMovimento;
     }
 
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public double getContaTotal() {
+        return contaTotal;
+    }
+
+    public void setContaTotal(double contaTotal) {
+        this.contaTotal = contaTotal;
+    }
+    
+    
 }
