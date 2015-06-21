@@ -87,13 +87,9 @@
                                                 <h:outputText value="R$ #{item.preco}" id="itemPrice" />
                                             </p:column>
 
-                                            <p:column headerText="Qnt."  style="align:center;text-align:center;">
-                                                <h:inputText  value="#{item.quantidade}" size="10" />
-                                            </p:column>
-
                                             <p:column style="width:50px;">
 
-                                                <p:commandButton  onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()" value="+" actionListener="#{menuController.addOrderItem(item)}" update=":frmP" />
+                                                <p:commandButton  value="+" actionListener="#{menuController.addOrderItem(item)}" update=":frmP" />
 
                                             </p:column>
                                         </p:dataTable>  
@@ -149,7 +145,7 @@
                                 <!-- @ Footer do Painel -->
                                 <div class="panel-footer" style="height: 55px;" id="orderFooter">
                                     <span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;padding-top: 5px;"></span><b>Total deste Pedido:</b><span class="ft-values">
-                                        R$ <h:outputText value="#{menuController.valorTotal}" >
+                                        R$ <h:outputText value="#{menuController.contaTotal}" >
                                             <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>]
                                         </h:outputText>    
 

@@ -45,7 +45,7 @@ public class MenuController {
     // Beans
     private ItemBean orderBuilderItem = new ItemBean();
     private TableBean tableBean = new TableBean();
-    private double valorTotal;
+    private double subTotal;
     private double contaTotal;
 
     private ContaItemBean contaItemBean = new ContaItemBean();
@@ -54,7 +54,7 @@ public class MenuController {
     private List<ItemBean> itemList = new ArrayList<ItemBean>();
     private List<ItemBean> orderBuilderList = new ArrayList<ItemBean>();
     private List<MovimentoBean> listaMovimento = new ArrayList<MovimentoBean>();
-
+   
     // Inicia Services
     private ItemService itemService = new ItemService();
 
@@ -64,33 +64,32 @@ public class MenuController {
         setItemList(itemService.listItems(selectedItemType));
 
     }
-    
+
     public void solicitarEncerramento() {
-       TableDAO tableDAO = new TableDAO();
-       boolean itemStatus = false;
+        TableDAO tableDAO = new TableDAO();
+        boolean itemStatus = false;
         System.out.println("STATUS DA CONTA:" + clientLogado.getSessionBean().isStatus());
         for (int i = 0; i < clientLogado.listaMovimento.size(); i++) {
-            if((clientLogado.listaMovimento.get(i).getItemStatus().equals("Solicitado")) || (clientLogado.listaMovimento.get(i).getItemStatus().equals("Pronto"))) {
+            if ((clientLogado.listaMovimento.get(i).getItemStatus().equals("Solicitado")) || (clientLogado.listaMovimento.get(i).getItemStatus().equals("Pronto"))) {
                 itemStatus = false;
             } else {
                 itemStatus = true;
             }
         }
- 
-       if(itemStatus == true) {
-      
-       tableBean.setNumero(clientLogado.tableBean.getNumero());
-       tableBean.setFlag("Solicitado");
-       tableDAO.gerenciarMesas(tableBean);
-       
-       
-       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
-           
-       } else {
-           
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
-       }
-   
+
+        if (itemStatus == true) {
+
+            tableBean.setNumero(clientLogado.tableBean.getNumero());
+            tableBean.setFlag("Solicitado");
+            tableDAO.gerenciarMesas(tableBean);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
+
+        } else {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
+        }
+
     }
 
     public void showSelectedTypeItems() throws ExceptionDAO {
@@ -102,27 +101,56 @@ public class MenuController {
     public void clearOrderBuilder() {
         orderBuilderList.clear();
         System.out.println("Pedido Limpado.");
-        valorTotal = 0.00;
+        subTotal = 0.00;
     }
 
     public void addOrderItem(ItemBean pItem) throws ExceptionDAO {
         orderBuilderItem = pItem;
-        //valorTotal = 0.00;
-        System.out.println("ITEM SELECIONADO: " + orderBuilderItem.getNome());
-        orderBuilderList.add(orderBuilderItem);
-        for (int i = 0; i < orderBuilderList.size(); i++) {
-            valorTotal = valorTotal + (orderBuilderList.get(i).getPreco() * orderBuilderList.get(i).getQuantidade());
+      if (orderBuilderList.isEmpty()) {
+            orderBuilderList.add(orderBuilderItem);
+            orderBuilderItem.setQuantidade(1);
+             subTotal = subTotal + (orderBuilderItem.getPreco() * orderBuilderItem.getQuantidade());
+             System.out.println("aaaaa1");
+      } else {
+
+            System.out.println("ITEM SELECIONADO: " + orderBuilderItem.getNome());
+            for (int i = 0; i < orderBuilderList.size(); i++) {
+                if (orderBuilderList.get(i).getCodigo() == pItem.getCodigo()) {
+                    orderBuilderList.get(i).setQuantidade(orderBuilderItem.getQuantidade() + 1);
+                    subTotal =  (orderBuilderList.get(i).getPreco() * orderBuilderList.get(i).getQuantidade());
+                     System.out.println("Valor total:" + subTotal);
+                } else {
+                    orderBuilderList.add(orderBuilderItem);
+                }
+            }
+            contaTotal = contaTotal + subTotal;
+                     
         }
+
+//orderBuilderItem = pItem;
+      
+
+    }
+
+    public void goTo(String page) throws IOException {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + page);
     }
 
     // <editor-fold desc="GET and SET">
     public void deletar(ItemBean pItem) {
         // orderBuilderItem.setQuantidade(0);
         orderBuilderItem = pItem;
-        orderBuilderList.remove(orderBuilderItem);
-        valorTotal = valorTotal - (pItem.getPreco() * pItem.getQuantidade());
+        for (int i = 0; i < orderBuilderList.size(); i++) {
+            if (orderBuilderList.get(i).getQuantidade() > 1) {
+                orderBuilderList.get(i).setQuantidade(orderBuilderItem.getQuantidade() - 1);
+            } else {
+                orderBuilderList.remove(orderBuilderItem);
+            }
+        }
+
     }
-    
+
     public void chamarGarcom() {
         TableDAO tableDAO = new TableDAO();
         tableBean.setNumero(clientLogado.tableBean.getNumero());
@@ -139,16 +167,15 @@ public class MenuController {
         System.out.println("NUMERO DA CONTA:" + clientLogado.getSessionBean().getCodigo());
         System.out.println("NUMERO CLIENTE CONTA" + clientLogado.getSessionBean().getC_codigo());
         System.out.println("NUMERO CPF CLIENTE CPF" + clientLogado.getClientBean().getCpf());
-       
-  
+
         contaItemBean.setContaCodigo(clientLogado.getSessionBean().getCodigo());
         contaItemBean.setClienteCodigo(clientLogado.getClientBean().getCodigo());
         contaItemBean.setClienteCpf(clientLogado.getClientBean().getCpf());
         contaItemBean.setMesaNumero(clientLogado.getTableBean().getNumero());
         tableBean.setNumero(clientLogado.getTableBean().getNumero());
- 
+
         tableBean.setStatus(true);
-        
+
         TableDAO tableDAO = new TableDAO();
         tableDAO.gerenciarMesas(tableBean);
         System.out.println("MESA FUNCIONARIO_CODIGO:" + clientLogado.getTableBean().getFuncionarioCodigo());
@@ -174,12 +201,12 @@ public class MenuController {
             contaItemBean.setStatus("Solicitado");
             orderItemService.salvarPedidoItem(contaItemBean);
         }
-        
-        contaTotal = contaTotal + valorTotal;
+
+        contaTotal = contaTotal + subTotal;
         MovimentoService movimentoService = new MovimentoService();
         //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
-        clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(),clientLogado.getTableBean().getNumero());
-
+        clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(), clientLogado.getTableBean().getNumero());
+        orderBuilderList = new ArrayList<ItemBean>();
         try {
             clientLogado.goTo("/mainclient.xhtml");
         } catch (IOException ex) {
@@ -187,10 +214,10 @@ public class MenuController {
         }
     }
 
-    public void atualizarValorTotal(){
+    public void atualizarValorTotal() {
         System.out.println("Ola");
     }
-    
+
     public void refleshPedidoGrid() {
         MovimentoService movimentoService = new MovimentoService();
         //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
@@ -302,14 +329,15 @@ public class MenuController {
         this.listaMovimento = listaMovimento;
     }
 
-    public double getValorTotal() {
-        return valorTotal;
+    public double getSubTotal() {
+        return subTotal;
     }
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
     }
 
+    
     public double getContaTotal() {
         return contaTotal;
     }
@@ -317,6 +345,5 @@ public class MenuController {
     public void setContaTotal(double contaTotal) {
         this.contaTotal = contaTotal;
     }
-    
-    
+
 }
