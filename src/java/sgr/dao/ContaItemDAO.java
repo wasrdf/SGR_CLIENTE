@@ -46,5 +46,19 @@ public class ContaItemDAO {
           ps.close();
           conn.close();
     }
-   
+ 
+     
+     public ContaItemBean solicitarCancelamento(ContaItemBean pContaItem) throws SQLException {
+          ConnectionBuilder connection = new ConnectionBuilder();
+            Connection conn = connection.getConnection();
+            String sql = "update conta_item set status=? where codigo=?";
+            System.out.println(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, pContaItem.getStatus());
+            ps.setInt(2, pContaItem.getCodigo());
+            ps.execute();
+            ps.close();
+            conn.close();
+            return pContaItem;
+     }
 }

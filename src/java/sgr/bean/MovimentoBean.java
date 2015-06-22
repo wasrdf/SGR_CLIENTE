@@ -21,6 +21,27 @@ public class MovimentoBean {
     private int quantidade;
     private String item;
     private double preco;
+    private int itemCodigo;
+    private int contaItemCodigo;
+
+    
+    public int getContaItemCodigo() {
+        return contaItemCodigo;
+    }
+
+    public void setContaItemCodigo(int contaItemCodigo) {
+        this.contaItemCodigo = contaItemCodigo;
+    }
+
+    public int getItemCodigo() {
+        return itemCodigo;
+    }
+
+    public void setItemCodigo(int itemCodigo) {
+        this.itemCodigo = itemCodigo;
+    }
+    
+    
 
     public int getClienteCodigo() {
         return clienteCodigo;

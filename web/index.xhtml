@@ -39,7 +39,7 @@
                                 <!-- @ Formulário de Login -->
                                 <div class="col-sm-7">
                                     <h3>Login</h3>
-                                    <h:form >
+                                    <h:form id='login' >
                                     <!-- @ Inputs -->
                                     <div class="form-group">
                                         <div class="input-group">
@@ -57,30 +57,22 @@
 
                                     <!-- @ Buttons -->
                                     <div class="btn-group" role="group" aria-label="...">
-                                        <h:commandButton class="btn btn-default" value="Entrar" actionListener="#{clientController.doLogin}"  />
-                                        <button type="button" class="btn btn-default">Entrar como Temporário</button>
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                Recuperar Senha
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#">Enviar por E-mail</a></li>
-                                                <li><a href="#">Enviar por SMS</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">Solicitar ao Garçom</a></li> 
-                                            </ul>
-                                        </div>
+                                        <p:commandButton  class="btn btn-default" value="Entrar" actionListener="#{clientController.doLogin}" update=":login" ajax="false" />
+                                        <p:commandButton  class="btn btn-default" value="Entrar como Temporário" actionListener="#{clientController.entrarTemporario}" ajax="false" update=":login" />
+                                        
+                                            <p:commandButton value="Recuperar Senha" type="button" class="btn btn-default dropdown-toggle" >
+                                            </p:commandButton>
+                                       
                                     </div>
                                     
 
-                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#signupModal"><i class="fa fa-user-plus"></i> Faça seu Cadastro</button>
+                                    <button style="height:  43px" class="btn btn-default" type="button" data-toggle="modal" data-target="#signupModal"><i class="fa fa-user-plus"></i> Faça seu Cadastro</button>
                                     </h:form>
                                     <p style="margin-top: 10px;">
                                         <span class="sgrc"><b>Novo no SGR?!</b></span> Cadastre-se e descubra as vantagens de ter sua própria conta conosco!
                                         Caso preferir utilize-se nosso sistema com uma conta temporária acima.
                                     </p>
-                                    
+                                    <p:messages   closable="true"  showDetail="true" style="color: red"  />
                                     <!-- # Modal SIGNUP -->
                                     <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -104,7 +96,7 @@
                                     </div>   
 
                                     <!-- # Mensagens de Erro -->
-                                    <h:messages styleClass="alert alert-warning"/> 
+                                  
                                 </div>
                             </div>
                         </div>

@@ -85,7 +85,7 @@ public class ClientController {
 
         // Inicia HTTPSession
         session = (HttpSession) ctx.getExternalContext().getSession(false);
-
+        try {
         // ### 01 ###
         // Identifica Mesa        
         //currentMac = MACReader.readMAC();
@@ -105,6 +105,7 @@ public class ClientController {
         // ### 02 ###
         // Busca Cliente      
         System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
+      
         listClient = clientService.doLogin(clientUsername, clientPassword);
         clientBean = listClient.get(0);
 
@@ -180,14 +181,135 @@ public class ClientController {
             }
 
         } else {
-
             System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
             FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+            
+        } 
+        
+        } catch (Exception ex) {
+            System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
+          
         }
-
+       
     }
 
+    public void entrarTemporario() {
+       
+        // Inicia Services
+        ClientService clientService = new ClientService();
+        TableService tableService = new TableService();
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        MovimentoService movimentoService = new MovimentoService();
+
+        // Inicia HTTPSession
+        session = (HttpSession) ctx.getExternalContext().getSession(false);
+        try {
+        // ### 01 ###
+        // Identifica Mesa        
+        //currentMac = MACReader.readMAC();
+        System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
+        System.out.println("MINHA MAC = :" + currentMac);
+        
+        //mesa 7
+        //currentMac = "94-DE-80-70-D9-15";
+        //mesa 12
+        //currentMac = "F4-6D-04-90-90-FA";
+        //mesa 5
+        currentMac = "68-17-29-0B-87-6D";
+        listTable = tableService.doTableSearch(currentMac);
+        tableBean = listTable.get(0);
+        System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
+
+        // ### 02 ###
+        // Busca Cliente      
+        System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
+      
+        //defino um usuário temporário
+        listClient = clientService.doLogin("admin", "admin");
+        clientBean = listClient.get(0);
+
+        listaMovimento = movimentoService.listarMovimentos(listClient.get(0).getCodigo(), tableBean.getNumero());
+        System.out.println("tamanho da lista: " + listaMovimento.size());
+
+        // ### 03 ###
+        // Valida dados do Cliente
+        
+
+            System.out.println("[CLIENT CONTROLLER][03] Cliente encontrado!");
+            System.out.println("[CLIENT CONTROLLER][03] Preparando seção...");
+
+            // Inicia Session Service
+            SessionService sessionService = new SessionService();
+
+            // ### 04 ###
+            // Abertura de Seção
+            // @ 04.1 
+            // Caso não existam seções abertas uma nova é iniciada
+            if (sessionService.doOpenedSessionSearch(clientBean.getCodigo(), 1) == false) {
+
+                // Define dados da nova seção
+                sessionBean.setStatus(true);
+                sessionBean.setC_codigo(clientBean.getCodigo());
+                sessionBean.setC_cpf(clientBean.getCpf());
+
+                System.out.println("[CLIENT CONTROLLER][04.1] Dados carregados para nova seção: Código do Cliente '" + clientBean.getCodigo() + "' e CPF '"
+                        + clientBean.getCpf() + "'.");
+
+                // Cria nova seção
+                sessionService.newSession(sessionBean);
+
+                // Adquiri dados da nova seção
+                listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+                sessionBean = listSession.get(0);
+
+                System.out.println("[CLIENT CONTROLLER][04.1] Dados da seção atual: Código da Seção '" + sessionBean.getCodigo() + "', Status '" + sessionBean.isStatus()
+                        + "' e Código do Cliente '" + clientBean.getCodigo() + "'.");
+
+                // Salva dados atuais no HTTPSession
+                session.setAttribute("currentClientName", clientBean.getNome());
+                session.setAttribute("currentUserCode", clientBean.getCodigo());
+                session.setAttribute("currentTable", tableBean.getNumero());
+                session.setAttribute("currentSessionCode", sessionBean.getCodigo());
+
+                // @ 04.2
+                // Caso uma seção aberta seja encontrada ela é recuperada
+            } else {
+
+                System.out.println("[CLIENT CONTROLLER][04.2] Seção aberta encontrada! Restaurando seção...");
+                // Recupera dados da seção aberta
+                listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+                sessionBean = listSession.get(0);
+                System.out.println("[CLIENT CONTROLLER][04.2] Dados da seção atual: Código da Seção '" + sessionBean.getCodigo() + "', Status '" + sessionBean.isStatus()
+                        + "' e Código do Cliente '" + clientBean.getCodigo() + "'.");
+                System.out.println("[CLIENT CONTROLLER[04.2] Seção restaurada com sucesso!");
+
+                // Salva dados atuais no HTTPSession
+                session.setAttribute("currentClientName", clientBean.getNome());
+                session.setAttribute("currentUserCode", clientBean.getCodigo());
+                session.setAttribute("currentTable", tableBean.getNumero());
+                session.setAttribute("currentSessionCode", sessionBean.getCodigo());
+
+            }
+
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/mainclient.xhtml");
+
+            } catch (IOException ex) {
+                System.out.println("[CLIENT CONTROLLER] ERRO: Não foi possível encontrar a página especificada.");
+                System.out.println(ex.getMessage());
+            }
+ 
+        } catch (Exception ex) {
+            System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
+          
+        }
+    
+        
+    }
+    
     public void recarregarMovimentos() {
         System.out.println("primeiro");
         MovimentoService movimentoService = new MovimentoService();

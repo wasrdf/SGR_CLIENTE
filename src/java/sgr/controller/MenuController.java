@@ -7,6 +7,7 @@
 package sgr.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,13 +21,14 @@ import javax.faces.context.FacesContext;
 import sgr.bean.ItemBean;
 import sgr.bean.MovimentoBean;
 import sgr.bean.ContaItemBean;
+import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
 import sgr.dao.ExceptionDAO;
 import sgr.dao.TableDAO;
 import sgr.service.ItemService;
 import sgr.service.MovimentoService;
 import sgr.service.ContaItemService;
-import sgr.service.TableService;
+import sgr.service.SessionService;
 
 @SessionScoped
 @ManagedBean(name = "menuController")
@@ -47,6 +49,7 @@ public class MenuController {
     private TableBean tableBean = new TableBean();
     private double subTotal;
     private double contaTotal;
+    private List<SessionBean> listSession = new ArrayList<SessionBean>();
 
     private ContaItemBean contaItemBean = new ContaItemBean();
     // Lists
@@ -54,7 +57,7 @@ public class MenuController {
     private List<ItemBean> itemList = new ArrayList<ItemBean>();
     private List<ItemBean> orderBuilderList = new ArrayList<ItemBean>();
     private List<MovimentoBean> listaMovimento = new ArrayList<MovimentoBean>();
-   
+
     // Inicia Services
     private ItemService itemService = new ItemService();
 
@@ -98,6 +101,28 @@ public class MenuController {
 
     }
 
+    public void solicitarCancelamento(MovimentoBean pMovimento) {
+        ContaItemService contaItemService = new ContaItemService();
+
+        if (pMovimento.getItemStatus().equals("Entregue")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Você não pode cancelar o item pois o mesmo já foi entregue.", ""));
+        } else {
+
+            contaItemBean.setCodigo(pMovimento.getContaItemCodigo());
+            System.out.println("codigo do item: " + contaItemBean.getItemCodigo());
+            contaItemBean.setStatus("Cancelamento");
+
+            contaItemService.solicitarCancelamento(contaItemBean);
+
+            //if (contaItemService.solicitarCancelamento(contaItemBean) != null) {
+            //  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sua solicitação de cancelamento foi enviada para o caixa favor aguardar alguns instantes.", ""));
+            //} else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocorreu um erro inesperado ao tentar cancelar o item selecionado por favor tente novamente.", ""));
+            //}
+
+        }
+    }
+
     public void clearOrderBuilder() {
         orderBuilderList.clear();
         System.out.println("Pedido Limpado.");
@@ -105,30 +130,26 @@ public class MenuController {
     }
 
     public void addOrderItem(ItemBean pItem) throws ExceptionDAO {
-        orderBuilderItem = pItem;
-      if (orderBuilderList.isEmpty()) {
-            orderBuilderList.add(orderBuilderItem);
-            orderBuilderItem.setQuantidade(1);
-             subTotal = subTotal + (orderBuilderItem.getPreco() * orderBuilderItem.getQuantidade());
-             System.out.println("aaaaa1");
-      } else {
-
-            System.out.println("ITEM SELECIONADO: " + orderBuilderItem.getNome());
-            for (int i = 0; i < orderBuilderList.size(); i++) {
-                if (orderBuilderList.get(i).getCodigo() == pItem.getCodigo()) {
-                    orderBuilderList.get(i).setQuantidade(orderBuilderItem.getQuantidade() + 1);
-                    subTotal =  (orderBuilderList.get(i).getPreco() * orderBuilderList.get(i).getQuantidade());
-                     System.out.println("Valor total:" + subTotal);
-                } else {
-                    orderBuilderList.add(orderBuilderItem);
-                }
-            }
-            contaTotal = contaTotal + subTotal;
-                     
-        }
-
-//orderBuilderItem = pItem;
+        boolean encontrou = false;
+        //orderBuilderItem = pItem;
       
+        for (int i = 0; i < orderBuilderList.size(); i++) {
+            System.out.println(orderBuilderList.get(i).getQuantidade()+" - " + pItem.getQuantidade());
+            if (orderBuilderList.get(i).getCodigo() == pItem.getCodigo()) {
+                orderBuilderList.get(i).setQuantidade(orderBuilderList.get(i).getQuantidade() + 1);
+                encontrou = true;
+            }
+
+        }
+        if (encontrou == true) {
+            orderBuilderList.remove(pItem);
+            orderBuilderList.add(pItem);
+
+        } else {
+            pItem.setQuantidade(1);
+            orderBuilderList.add(pItem);
+
+        }
 
     }
 
@@ -141,13 +162,8 @@ public class MenuController {
     public void deletar(ItemBean pItem) {
         // orderBuilderItem.setQuantidade(0);
         orderBuilderItem = pItem;
-        for (int i = 0; i < orderBuilderList.size(); i++) {
-            if (orderBuilderList.get(i).getQuantidade() > 1) {
-                orderBuilderList.get(i).setQuantidade(orderBuilderItem.getQuantidade() - 1);
-            } else {
-                orderBuilderList.remove(orderBuilderItem);
-            }
-        }
+
+        orderBuilderList.remove(orderBuilderItem);
 
     }
 
@@ -160,57 +176,76 @@ public class MenuController {
     }
 
     public void buildOrder() {
-
-        ContaItemService orderItemService = new ContaItemService();
-        System.out.println("***************************");
-        System.out.println("NUMERO DA MESA:" + clientLogado.getTableBean().getNumero());
-        System.out.println("NUMERO DA CONTA:" + clientLogado.getSessionBean().getCodigo());
-        System.out.println("NUMERO CLIENTE CONTA" + clientLogado.getSessionBean().getC_codigo());
-        System.out.println("NUMERO CPF CLIENTE CPF" + clientLogado.getClientBean().getCpf());
-
-        contaItemBean.setContaCodigo(clientLogado.getSessionBean().getCodigo());
-        contaItemBean.setClienteCodigo(clientLogado.getClientBean().getCodigo());
-        contaItemBean.setClienteCpf(clientLogado.getClientBean().getCpf());
-        contaItemBean.setMesaNumero(clientLogado.getTableBean().getNumero());
-        tableBean.setNumero(clientLogado.getTableBean().getNumero());
-
-        tableBean.setStatus(true);
-
-        TableDAO tableDAO = new TableDAO();
-        tableDAO.gerenciarMesas(tableBean);
-        System.out.println("MESA FUNCIONARIO_CODIGO:" + clientLogado.getTableBean().getFuncionarioCodigo());
-        System.out.println("MESA FUNCIONARIO_CPF:" + clientLogado.getTableBean().getFuncionarioCpf());
-        contaItemBean.setFuncionarioCodigo(clientLogado.getTableBean().getFuncionarioCodigo());
-        contaItemBean.setFuncionarioCpf(clientLogado.getTableBean().getFuncionarioCpf());
-        contaItemBean.setData(new Date());
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println("Iniciando Pedido Item");
-        System.out.println("PEDIDO NUMERO MESA: " + contaItemBean.getMesaNumero());
-        System.out.println("PEDIDO CONTA_CODIGO: " + +contaItemBean.getContaCodigo());
-        System.out.println("PEDIDO CLIENTE: " + contaItemBean.getClienteCodigo());
-        System.out.println("PEDIDO CLIENTE CPF: " + contaItemBean.getClienteCpf());
-        System.out.println("PEDIDO FUNCIONARIO: " + contaItemBean.getFuncionarioCodigo());
-        System.out.println("PEDIDO FUNCIONARIO CPF: " + contaItemBean.getFuncionarioCpf());
-        System.out.println("PEDIDO ITEM COD: " + contaItemBean.getItemCodigo());
-        System.out.println("PEDIDO QTD: " + contaItemBean.getQuantidade());
-        System.out.println("PEDIDO DATA: " + contaItemBean.getData());
-
-        for (int i = 0; i < orderBuilderList.size(); i++) {
-            contaItemBean.setItemCodigo(orderBuilderList.get(i).getCodigo());
-            contaItemBean.setQuantidade(orderBuilderList.get(i).getQuantidade());
-            contaItemBean.setStatus("Solicitado");
-            orderItemService.salvarPedidoItem(contaItemBean);
+        SessionService sessionService = new SessionService();
+        try {
+            listSession = sessionService.doOpenedSessionInfoSearch(clientLogado.getClientBean().getCodigo(), 1);
+        } catch (ExceptionDAO ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        contaTotal = contaTotal + subTotal;
-        MovimentoService movimentoService = new MovimentoService();
-        //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
-        clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(), clientLogado.getTableBean().getNumero());
-        orderBuilderList = new ArrayList<ItemBean>();
-        try {
-            clientLogado.goTo("/mainclient.xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        if (!(listSession.isEmpty())) {
+
+            System.out.println("status da conta:" + clientLogado.getSessionBean().isStatus());
+            ContaItemService orderItemService = new ContaItemService();
+            System.out.println("***************************");
+            System.out.println("NUMERO DA MESA:" + clientLogado.getTableBean().getNumero());
+            System.out.println("NUMERO DA CONTA:" + clientLogado.getSessionBean().getCodigo());
+            System.out.println("NUMERO CLIENTE CONTA" + clientLogado.getSessionBean().getC_codigo());
+            System.out.println("NUMERO CPF CLIENTE CPF" + clientLogado.getClientBean().getCpf());
+
+            contaItemBean.setContaCodigo(clientLogado.getSessionBean().getCodigo());
+            contaItemBean.setClienteCodigo(clientLogado.getClientBean().getCodigo());
+            contaItemBean.setClienteCpf(clientLogado.getClientBean().getCpf());
+            contaItemBean.setMesaNumero(clientLogado.getTableBean().getNumero());
+            tableBean.setNumero(clientLogado.getTableBean().getNumero());
+
+            tableBean.setStatus(true);
+
+            TableDAO tableDAO = new TableDAO();
+            tableDAO.gerenciarMesas(tableBean);
+            System.out.println("MESA FUNCIONARIO_CODIGO:" + clientLogado.getTableBean().getFuncionarioCodigo());
+            System.out.println("MESA FUNCIONARIO_CPF:" + clientLogado.getTableBean().getFuncionarioCpf());
+            contaItemBean.setFuncionarioCodigo(clientLogado.getTableBean().getFuncionarioCodigo());
+            contaItemBean.setFuncionarioCpf(clientLogado.getTableBean().getFuncionarioCpf());
+            contaItemBean.setData(new Date());
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            System.out.println("Iniciando Pedido Item");
+            System.out.println("PEDIDO NUMERO MESA: " + contaItemBean.getMesaNumero());
+            System.out.println("PEDIDO CONTA_CODIGO: " + +contaItemBean.getContaCodigo());
+            System.out.println("PEDIDO CLIENTE: " + contaItemBean.getClienteCodigo());
+            System.out.println("PEDIDO CLIENTE CPF: " + contaItemBean.getClienteCpf());
+            System.out.println("PEDIDO FUNCIONARIO: " + contaItemBean.getFuncionarioCodigo());
+            System.out.println("PEDIDO FUNCIONARIO CPF: " + contaItemBean.getFuncionarioCpf());
+            System.out.println("PEDIDO ITEM COD: " + contaItemBean.getItemCodigo());
+            System.out.println("PEDIDO QTD: " + contaItemBean.getQuantidade());
+            System.out.println("PEDIDO DATA: " + contaItemBean.getData());
+
+            for (int i = 0; i < orderBuilderList.size(); i++) {
+                contaItemBean.setItemCodigo(orderBuilderList.get(i).getCodigo());
+                contaItemBean.setQuantidade(orderBuilderList.get(i).getQuantidade());
+                contaItemBean.setStatus("Solicitado");
+                orderItemService.salvarPedidoItem(contaItemBean);
+            }
+
+            contaTotal = contaTotal + subTotal;
+            MovimentoService movimentoService = new MovimentoService();
+            //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
+            clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(), clientLogado.getTableBean().getNumero());
+            orderBuilderList = new ArrayList<ItemBean>();
+            try {
+                clientLogado.goTo("/mainclient.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            try {
+                clientLogado.goTo("/index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -337,7 +372,6 @@ public class MenuController {
         this.subTotal = subTotal;
     }
 
-    
     public double getContaTotal() {
         return contaTotal;
     }

@@ -39,7 +39,7 @@
                     <!-- [I] Logo -->                
                     <a class="navbar-brand" href="#">
                         <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
-                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
+                             margin-top:-20px; background-color:#F8F8F8" class="img-rounded"></img>
                     </a>
 
                     <!-- [F] Exibição do Usuário -->
@@ -137,7 +137,7 @@
 
         <!-- [I] Display Principal -->
         <h:form id="frmPrincipal" rendered="#{clientController.tela == 0}">
-            <div class="container">
+            <div style="width: 100%;margin-top: 2%"  class="container">
                 <div class="row clearfix">
                     <div class="col-md-6 column">
 
@@ -147,40 +147,40 @@
                                 <h3 class="panel-title"><i class="fa fa-cutlery panel-icon"></i> Cardápio</h3>
                             </div>
                             <div class="panel-body">
-                                <img src="img/cardapio-header.jpg" class="img-responsive panel-image-full"></img>
+                                <img src="img/cardapio-header.jpg" style="width: 100%" class="img-responsive panel-image-full"></img>
                                 <h:commandButton class="btn btn-default" value="Consultar Cardápio" actionListener="#{clientController.goTo('/menu.xhtml')}"/>
 
                             </div>
                         </div>
 
 
-                        <div class="panel panel-default">
+                        <div  class="panel panel-default">
 
                             <div class="panel-heading">
                                 <h5 class="panel-title"><i class="fa fa-list-alt panel-icon"></i> Meus Pedidos</h5>
                             </div>
 
-                            <div class="panel-body">
+                            <div  class="panel-body">
                                 <div class="row clearfix">
-                                    <div class="table-responsive">
+                                    <div  class="table-responsive">
 
 
                                         <!--aqui em atualizo a lista em 30 em 30 seg-->
                                         <p:poll interval="30" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
 
 
-                                        <p:dataTable paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
+                                        <p:dataTable   paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
 
 
-                                            <p:column headerText="Item">
+                                            <p:column  headerText="Item">
                                                 <h:outputText value="#{movimento.item}" />
                                             </p:column>
 
-                                            <p:column headerText="Quantidade">
+                                            <p:column style="width: 100px" headerText="Quantidade">
                                                 <h:outputText value="#{movimento.quantidade}" />
                                             </p:column>  
 
-                                            <p:column headerText="Preço">
+                                            <p:column style="width: 100px" headerText="Preço">
                                                 <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" >
                                                     <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
                                                 </p:outputLabel>
@@ -200,9 +200,21 @@
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
                                                     <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
+                                                
+                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
+                                                    <h:outputText style="color: #28a4c9;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                </p:outputPanel>
+                                            
+                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
+                                                    <h:outputText style="color: blue;background-color: #888;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                </p:outputPanel>
+                                            
                                             </p:column>
-
-
+                                          
+                                            <p:column headerText="Solicitação de cancelamento" >
+                                                
+                                                <p:commandButton update="movimento" class="btn btn-default" ajax="false" value="Solicitar Cancelamento" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
+                                            </p:column>
                                         </p:dataTable>
                                     </div>
                                 </div>
@@ -210,7 +222,7 @@
 
                             <div class="panel-footer">
                                 <p:commandButton ajax="false"  class="btn btn-default" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
-                                <p:commandButton update="movimento" class="btn btn-default" type="button" value="Solicitar Cancelamento" />
+                                
 
                                 <span> Total: 0,00 </span>
 

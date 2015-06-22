@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sgr.bean.ContaItemBean;
+import sgr.dao.ContaItemDAO;
 import sgr.dao.ExceptionDAO;
 
 /**
@@ -31,6 +32,16 @@ public class ContaItemService {
             Logger.getLogger(ContaItemService.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public ContaItemBean solicitarCancelamento(ContaItemBean pItem) {
+        ContaItemDAO contaItemDAO = new ContaItemDAO();
+        try {
+           return contaItemDAO.solicitarCancelamento(pItem);
+        } catch (SQLException ex) {
+            Logger.getLogger(ContaItemService.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
 }
