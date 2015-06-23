@@ -13,25 +13,23 @@
 
     <h:head>
         <title>SGR | Principal</title>
-
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
         <!-- Carrega Bootstrap e CSS Extra -->
         <link href="css/bootstrap.css" rel="stylesheet"></link>
         <link href="css/sgr.css" rel="stylesheet"></link>
-        <link href="css/font-awesome.min.css" rel="stylesheet"></link>
+        <link href="css/mainclient.css" rel="stylesheet"></link>
+        <link href="css/font-awesome.css" rel="stylesheet"></link>
 
         <!-- Carrega JQuery -->
         <script src="js/jquery-2.1.3.js"></script>
 
         <!-- Carrega Plugins Avulsos -->		
         <script src="js/bootstrap.js"></script>
-
     </h:head>
 
-    <h:body>
-
+    <h:body style="padding-top: 70px;">       
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -39,7 +37,7 @@
                     <!-- [I] Logo -->                
                     <a class="navbar-brand" href="#">
                         <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
-                             margin-top:-20px; background-color:#F8F8F8" class="img-rounded"></img>
+                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
                     </a>
 
                     <!-- [F] Exibição do Usuário -->
@@ -52,10 +50,8 @@
                                                                         aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock"></span></b></p>               
 
                 <!-- [S] Script Hora -->
-
                 <script type="text/javascript">
                     //<![CDATA[
-
                     function clock()
                     {
                         var digital = new Date();
@@ -79,12 +75,12 @@
                                                                        aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate"></span></b></p>
 
                 <!-- [S] Script Data -->
-
-                <script type="text/javascript">                         //<![CDATA[
+                <script type="text/javascript">
+                    //<![CDATA[
                     var now = new Date();
                     var days = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
-                    var months = n ew Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
-                            var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
+                    var months = new Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+                    var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
                     var year = (now.getYear() < 1000) ? now.getYear() + 1900 : now.getYear();
                     today = days[now.getDay()] + ", " + date + " de " + months[now.getMonth()] + ", " + year;
                     var basicdate = document.getElementById('basicdate');
@@ -95,20 +91,18 @@
                 <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
 
                     <!-- [I] Configurações -->
-                    <li><div class="dropdown" style="margin-top:8px; margin-right:5px;">
-
-                            <h:form>  <h:commandButton class="btn btn-default"   value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}" /></h:form>
-
-                        </div>
-                    </li>
+                    <li><h:form>
+                            <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clientprofile.xhtml')}"/>
 
 
-                    <!-- [I] Logout Button -->
-                    <li><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">Sair</button></li>
+                            <!-- [I] Logout Button -->
+                            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">Sair</button>
+                        </h:form></li>
                 </ul>       
 
             </div>                 
         </nav>
+
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -130,103 +124,89 @@
                 </div>
             </div>
         </div>
-
-
-
         <!-- [I] Fim do Painel Principal -->
 
         <!-- [I] Display Principal -->
         <h:form id="frmPrincipal" rendered="#{clientController.tela == 0}">
-            <div style="width: 100%;margin-top: 2%"  class="container">
+            <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-6 column">
 
                         <!-- [I][P] Painel Esquerdo -->
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-cutlery panel-icon"></i> Cardápio</h3>
+                                <h5><i class="fa fa-cutlery sgr-panel-icon"></i> Cardápio</h5>
                             </div>
                             <div class="panel-body">
-                                <img src="img/cardapio-header.jpg" style="width: 100%" class="img-responsive panel-image-full"></img>
+                                <img src="img/cardapio-header.jpg" class="img-responsive panel-image-full"></img>
                                 <h:commandButton class="btn btn-default" value="Consultar Cardápio" actionListener="#{clientController.goTo('/menu.xhtml')}"/>
 
                             </div>
                         </div>
 
 
-                        <div  class="panel panel-default">
+                        <div class="panel panel-default">
 
                             <div class="panel-heading">
-                                <h5 class="panel-title"><i class="fa fa-list-alt panel-icon"></i> Meus Pedidos</h5>
+                                <h5><i class="fa fa-list-alt sgr-panel-icon"></i> Meus Pedidos</h5>
                             </div>
 
-                            <div  class="panel-body">
+                            <div class="panel-body">
                                 <div class="row clearfix">
-                                    <div  class="table-responsive">
-
-
-                                        <!--aqui em atualizo a lista em 30 em 30 seg-->
+                                    <div class="table-responsive">                                      
+                                        <!-- @ UPDATER -->
                                         <p:poll interval="30" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
+                                        
+                                        <p:dataTable tableStyleClass="table table-striped" id="movimento" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
 
-
-                                        <p:dataTable   paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
-                                            <p:column  headerText="Item">
+                                            <p:column headerText="Item" style="text-align: left;" class="sgr_p">
                                                 <h:outputText value="#{movimento.item}" />
                                             </p:column>
 
-                                            <p:column style="width: 100px" headerText="Quantidade">
+                                            <p:column headerText="Quantidade" style="text-align: center;" class="sgr_p">
                                                 <h:outputText value="#{movimento.quantidade}" />
                                             </p:column>  
 
-                                            <p:column style="width: 100px" headerText="Preço">
-                                                <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" >
+                                            <p:column headerText="Preço" style="text-align: center;" class="sgr_p">
+                                                R$
+                                                <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" class="sgr_p" >
                                                     <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
                                                 </p:outputLabel>
                                             </p:column>    
 
-
-                                            <p:column  sortBy="#{movimento.itemStatus}" headerText="Status do Item">
-
+                                            <p:column  sortBy="#{movimento.itemStatus}" headerText="Status" style="text-align: center;" class="sgr_p">
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Solicitado')}"  >
-                                                    <h:outputText style="color: red;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />
+                                                    <h:outputText class="label label-default sgr_d" value="#{movimento.itemStatus}" />
                                                 </p:outputPanel>
-
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Pronto')}" >
-                                                    <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                    <h:outputText class="label label-primary sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
-                                                    <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                    <h:outputText class="label label-success sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
-                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
-                                                    <h:outputText style="color: #28a4c9;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelando')}" >
+                                                    <h:outputText class="label label-warning sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
-                                                    <h:outputText style="color: blue;background-color: #888;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                    <h:outputText class="label label-danger sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
-                                                    <h:outputText style="color: violet;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                                                    <h:outputText class="label label-info sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
+                                            </p:column>
+                                            
+                                            <p:column>   
+                                                <p:commandButton update="movimento" class="btn btn-default btn-xs" ajax="false" value="Cancelar" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
                                             </p:column>
 
-                                            <p:column headerText="Solicitação de cancelamento" >   
-                                                <p:commandButton update="movimento" class="btn btn-default" ajax="false" value="Solicitar Cancelamento" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
-                                            </p:column>
                                         </p:dataTable>
+                                        
                                     </div>
                                 </div>
                             </div>
 
                             <div class="panel-footer">
-                                <p:commandButton ajax="false"  class="btn btn-default" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
-
-
-                                <span> Total: 0,00 </span>
-
+                                <p:commandButton ajax="false" class="btn btn-default btn-sm" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
                             </div>
 
                         </div>
@@ -239,85 +219,79 @@
                             <div class="col-md-6 column">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Recomendações</h3>
+                                        <h5><i class="fa fa-thumbs-up sgr-panel-icon"></i>Recomendações</h5>
                                     </div>
-                                    <div class="panel-body">
-                                        -
+                                    <div class="panel-body sgr_nocontent">
+                                        Não existem recomendações no momento.
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 column">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Promoções</h3>
+                                        <h5><i class="fa fa-certificate sgr-panel-icon"></i>Promoções</h5>
                                     </div>
-                                    <div class="panel-body">
-                                        -
+                                    <div class="panel-body sgr_nocontent">
+                                        Não existem promoções disponíveis no momento.
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row clearfix">
-                            <div class="col-md-10 column">
+                            <div class="col-md-12 column">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Avisos</h3>
+                                        <h5><i class="fa fa-star sgr-panel-icon"></i>Populares</h5>
                                     </div>
                                     <div  class="panel-body">
-                                        <p:messages   showDetail="true" closable="true"  />
+                                        <table>
+                                            <tr>
+                                                <td style="padding-bottom: 5px;">
+                                                   <img src="img/highlight_01.png" class="img-responsive panel-image-full"></img>
+                                                </td>                                        
+                                                <td class="highlight_content">                                                    
+                                                    <span class="highlight_h">Combo Oriental Lótus</span>
+                                                    <br></br>
+                                                    <i class="fa fa-heart sgr-panel-icon"></i>1332
+                                                    <i class="fa fa-asterisk sgr-panel-icon"></i>R$ <b>45,20</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 5px;">
+                                                   <img src="img/highlight_02.png" class="img-responsive panel-image-full"></img> 
+                                                </td>
+                                                <td class="highlight_content">                                                    
+                                                    <span class="highlight_h">Especial Thai</span>
+                                                    <br></br>
+                                                    <i class="fa fa-heart sgr-panel-icon"></i>1206
+                                                    <i class="fa fa-asterisk sgr-panel-icon"></i>R$ <b>32,70</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 5px;">
+                                                   <img src="img/highlight_03.png" class="img-responsive panel-image-full"></img> 
+                                                </td>
+                                                <td class="highlight_content">                                                    
+                                                    <span class="highlight_h">Pizza Calabresa Mestre</span>
+                                                    <br></br>
+                                                    <i class="fa fa-heart sgr-panel-icon"></i>1107
+                                                    <i class="fa fa-asterisk sgr-panel-icon"></i>R$ <b>29,90</b>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <h:messages  class="alert alert-warning" showDetail="true" layout="table" style="width:100%"/>
                                     </div>
                                 </div>
-                            </div>
+
+
+                            </div>                            
+
                         </div>
                     </div>
                 </div>
             </div>                
         </h:form>
-        <!-- -->   
-
-        <!--Formulario pedido detalhe-->
-        <h:form id="frmDetalhe" rendered="#{clientController.tela == 1}" >
-
-            <h:panelGrid width="70%" style="background-color: #F8F8F8;opacity:0.76;-moz-opacity: 0.65;filter: alpha(opacity=65);text-align: center;margin-left: 40px;margin-top: 5%"  >
-
-                <p:separator/>
-                <h3>Detalhes do pedido </h3><br/>
-
-                <h:panelGrid columns="2">
-
-                    <h:outputLabel  value="Produto:  " style="margin-left: 10px" />
-                    <p:outputLabel value="#{clientController.movimento.item}"  style="margin-left: 10px" />
-
-                </h:panelGrid>
-
-                <h:panelGrid columns="2">
-
-                    <h:outputLabel  value="Preço:  " style="margin-left: 10px" />
-                    <p:outputLabel value="#{clientController.movimento.preco}"  style="margin-left: 10px" >
-                        <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
-                    </p:outputLabel>
-
-                </h:panelGrid>  
-
-                <h:panelGrid columns="2">
-                    <h:outputLabel  value="Status do produto:  " style="margin-left: 10px" />
-                    <p:outputLabel value="#{clientController.movimento.itemStatus}"  style="margin-left: 10px" />
-                </h:panelGrid>
-
-                <!-- [I] Funções de Conta -->
-                <h:panelGrid columns="2">
-                    <p:commandButton  immediate="true" ajax="true"  action="#{clientController.salvarClient()}" class="btn btn-default" value="Salvar"  />
-
-                    <p:commandButton update=":frmPrincipal :frmDetalhe" ajax="false" class="btn btn-default" value="Voltar" style="float:right;" actionListener="#{clientController.mudarTela(0)}"/>
-
-
-                </h:panelGrid >
-
-            </h:panelGrid>
-            <!-- [I] Footer -->
-
-            <!-- [M] Modal -->
-        </h:form>
+        <!-- -->           
 
         <nav class="navbar navbar-default navbar-fixed-bottom">
             <div class="container">
@@ -331,7 +305,7 @@
                 <!-- [I] Funções de Conta -->
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
+                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-sm" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
 
                 </ul>
 
