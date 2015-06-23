@@ -38,7 +38,7 @@
         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
         <h:form id="frmP">
 
-            <div class="container">
+            <div style="width: 100%" class="container">
                 <div class="row clearfix">
                     <div class="col-md-6">                        
                         <div class="panel panel-default">
@@ -68,30 +68,23 @@
                                 <div class="row" style="max-height:500px;overflow-y: scroll;">
                                     <div class="table-responsive">                              
 
-                                        <p:dataTable id="menuItems" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="item" value="#{menuController.itemList}">
-                                            <p:column headerText="Código">
+                                        <p:dataTable  id="menuItems" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="item" value="#{menuController.itemList}">
+                                            <p:column width="6%" headerText="Código">
                                                 <h:outputText style="color:#D45744;" value="#{item.codigo}"   />                                    
                                             </p:column>
 
-                                            <p:column headerText="">
+                                            <p:column width="20%" headerText="Item">
                                                 <h:outputText style="color:#D45744;" value="#{item.nome}" id="itemName"  />                                    
                                             </p:column>
                                             <p:column headerText="Descrição" style="align:left;text-align:left" >
                                                 <h:outputText value="#{item.composicao}" id="itemComposition" />
                                             </p:column>
-                                            <p:column headerText="Preço" style="align:center;text-align:center;">
+                                            <p:column width="15%" headerText="Preço" style="align:center;text-align:center;">
                                                 <h:outputText value="R$ #{item.preco}" id="itemPrice" />
                                             </p:column>
 
-
-                                            <p:column headerText="Qnt."  style="align:center;text-align:center;">
-                                                <h:inputText  value="#{item.quantidade}" size="10" />
-                                            </p:column>
-
-                                            <p:column style="width:50px;">
-
+                                            <p:column headerText="Quantidade" width="15%" style="text-align: center" >
                                                 <p:commandButton ajax="false" value="+" actionListener="#{menuController.addOrderItem(item)}" update=":frmP" />
-
                                             </p:column>
                                         </p:dataTable>  
 

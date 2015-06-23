@@ -111,14 +111,12 @@ public class MenuController {
             contaItemBean.setCodigo(pMovimento.getContaItemCodigo());
             System.out.println("codigo do item: " + contaItemBean.getItemCodigo());
             contaItemBean.setStatus("Cancelamento");
-
-            contaItemService.solicitarCancelamento(contaItemBean);
-
-            //if (contaItemService.solicitarCancelamento(contaItemBean) != null) {
-            //  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sua solicitação de cancelamento foi enviada para o caixa favor aguardar alguns instantes.", ""));
-            //} else {
+            if (contaItemService.solicitarCancelamento(contaItemBean) != null) {
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sua solicitação de cancelamento foi enviada para o caixa favor aguardar alguns instantes.", ""));
+              clientLogado.recarregarMovimentos();
+            } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocorreu um erro inesperado ao tentar cancelar o item selecionado por favor tente novamente.", ""));
-            //}
+            }
 
         }
     }

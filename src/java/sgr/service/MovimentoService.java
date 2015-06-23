@@ -24,6 +24,7 @@ import sgr.sql.QueryType;
  */
 public class MovimentoService {
     
+    //lista os itens na tela principal
     public List<MovimentoBean> listarMovimentos(int pCliente,int pMesa) {
         List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
         QueryBuilder query = new QueryBuilder();
@@ -31,6 +32,7 @@ public class MovimentoService {
         query.addQuery(QueryOperation.empty, "vw_movimento.cliente_codigo", QueryGender.equal, String.valueOf(pCliente), QueryType.number);
         query.addQuery(QueryOperation.and, "vw_movimento.mesa_numero", QueryGender.equal, String.valueOf(pMesa), QueryType.number);
         query.addQuery(QueryOperation.and, "vw_movimento.conta_status", QueryGender.equal, String.valueOf(1), QueryType.number);
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.different, "CANCELADO", QueryType.text);
         
         MovimentoDAO movimentoDAO = new MovimentoDAO();
         

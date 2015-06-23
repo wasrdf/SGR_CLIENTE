@@ -170,9 +170,7 @@
 
 
                                         <p:dataTable   paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
-
-
-                                            <p:column  headerText="Item">
+                                           <p:column  headerText="Item">
                                                 <h:outputText value="#{movimento.item}" />
                                             </p:column>
 
@@ -211,8 +209,7 @@
                                             
                                             </p:column>
                                           
-                                            <p:column headerText="Solicitação de cancelamento" >
-                                                
+                                            <p:column headerText="Solicitação de cancelamento" >   
                                                 <p:commandButton update="movimento" class="btn btn-default" ajax="false" value="Solicitar Cancelamento" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
                                             </p:column>
                                         </p:dataTable>
@@ -263,7 +260,7 @@
                                         <h3 class="panel-title">Avisos</h3>
                                     </div>
                                     <div  class="panel-body">
-                                        <h:messages  showDetail="true" style="color: blue"  />
+                                        <p:messages   showDetail="true" closable="true"  />
                                     </div>
                                 </div>
                             </div>
