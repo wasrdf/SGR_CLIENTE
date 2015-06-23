@@ -1,10 +1,6 @@
-<!--SGR teste GIT -->
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
@@ -14,7 +10,7 @@
         <!-- Carrega Bootstrap e CSS Extra -->
         <link href="css/bootstrap.css" rel="stylesheet"></link>
         <link href="css/sgr.css" rel="stylesheet"></link>
-        <link href="css/font-awesome.min.css" rel="stylesheet"></link>
+        <link href="css/font-awesome.css" rel="stylesheet"></link>
 
         <!-- Carrega JQuery -->
         <script src="js/jquery-2.1.3.js"></script>
@@ -22,27 +18,26 @@
         <!-- Carrega Plugins Avulsos -->		
         <script src="js/bootstrap.js"></script>
 
+
         <title>SGR | Login</title>        
     </h:head>
 
-    <h:body>
-        
-            <div class="vertical-center">
-                <div class="container">
-                    <div class="panel panel-default">
-                        <div class="panel-body">                            
-                            <div class="row ">
+    <h:body>        
+        <div class="vertical-center">
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">                            
+                        <div class="row ">
 
+                            <!-- @ Logo -->
+                            <div class="col-sm-4">
+                                <img src="img/sgr_logo_sd.png" class="img-responsive"></img>	
+                            </div>
 
-                                <!-- @ Logo -->
-                                <div class="col-sm-4">
-                                    <img src="img/sgr_logo_sd.png" class="img-responsive"></img>	
-                                </div>
-
-                                <!-- @ Formulário de Login -->
-                                <div class="col-sm-7">
-                                    <h3>Login</h3>
-                                    <h:form id='login' >
+                            <!-- @ Formulário de Login -->
+                            <div class="col-sm-7">
+                                <h3>Login</h3>
+                                <h:form >
                                     <!-- @ Inputs -->
                                     <div class="form-group">
                                         <div class="input-group">
@@ -60,66 +55,59 @@
 
                                     <!-- @ Buttons -->
                                     <div class="btn-group" role="group" aria-label="...">
-                                        <p:commandButton  class="btn btn-default" value="Entrar" actionListener="#{clientController.doLogin}" update=":login" ajax="false" />
-                                        <p:commandButton  class="btn btn-default" value="Entrar como Temporário" actionListener="#{clientController.entrarTemporario}" ajax="false" update=":login" />
-                                        
-                                            <p:commandButton value="Recuperar Senha" type="button" class="btn btn-default dropdown-toggle" >
-                                            </p:commandButton>
-                                       
+                                        <h:commandButton class="btn btn-default" value="Entrar" actionListener="#{clientController.doLogin}"  />
+                                        <h:commandButton class="btn btn-default" value="Entrar como Temporário" actionListener="#{clientController.entrarTemporario}" />
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                Recuperar Senha
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">Enviar por E-mail</a></li>
+                                                <li><a href="#">Enviar por SMS</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Solicitar ao Garçom</a></li> 
+                                            </ul>
+                                        </div>
                                     </div>
-                                    
 
-                                    <button style="height:  43px" class="btn btn-default" type="button" data-toggle="modal" data-target="#signupModal"><i class="fa fa-user-plus"></i> Faça seu Cadastro</button>
-                                    </h:form>
-                                    <p style="margin-top: 10px;">
-                                        <span class="sgrc"><b>Novo no SGR?!</b></span> Cadastre-se e descubra as vantagens de ter sua própria conta conosco!
-                                        Caso preferir utilize-se nosso sistema com uma conta temporária acima.
-                                    </p>
-                                    <p:messages   closable="true"  showDetail="true" style="color: red"  />
-                                    <!-- # Modal SIGNUP -->
-                                    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-exclamation-triangle sgrc"></i> Atenção</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4>Olá cliente!</h4>
-                                                    <p>Agradecemos a preferência e disposição de fazer e ter seu próprio cadastro! Pedimos para que por favor realize o mesmo com informações válidas
-                                                        para que possamos melhor atender-lo. Gostariamos de informar que contas cadastradas com dados inválidos, falsos ou ofensivos serão deletadas. Estamos
-                                                        contando com você! Aproveite nossos recursos!</p>
 
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><h:commandButton class="btn btn-default" value="Continuar para o Cadastro" actionListener="#{clientController.goTo('/signup.xhtml')}"/></h:form>
-                                                </div>
+                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#signupModal"><i class="fa fa-user-plus"></i> Faça seu Cadastro</button>
+                                </h:form>
+                                <p style="margin-top: 10px;">
+                                    <span class="sgrc"><b>Novo no SGR?!</b></span> Cadastre-se e descubra as vantagens de ter sua própria conta conosco!
+                                    Caso preferir utilize nosso sistema com uma conta temporária acima.
+                                </p>
+
+                                <!-- # Modal SIGNUP -->
+                                <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-exclamation-triangle sgrc"></i> Atenção</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>Olá cliente!</h4>
+                                                <p>Agradecemos a preferência e disposição de fazer e ter seu próprio cadastro! Pedimos para que por favor realize o mesmo com informações válidas
+                                                    para que possamos melhor atender-lo.</p>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><h:commandButton class="btn btn-default" value="Continuar para o Cadastro" actionListener="#{clientController.goTo('/signup.xhtml')}"/></h:form>
                                             </div>
                                         </div>
-                                    </div>   
+                                    </div>
+                                </div>   
 
-                                    <!-- # Mensagens de Erro -->
-                                  
-                                </div>
+                                <!-- # Mensagens de Erro -->
+                                <h:messages styleClass="alert alert-warning"/> 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        <script>
-function formatar(mascara, documento){
-    var i = documento.value.length;
-    var saida = mascara.substring(0,1);
-    var texto = mascara.substring(i)
-
-    if (texto.substring(0,1) != saida){
-        documentos += texto.substring(0,1);
-    }
-}
-</script>
-                      
-
+        </div>      
     </h:body>
-
 </html>
 
