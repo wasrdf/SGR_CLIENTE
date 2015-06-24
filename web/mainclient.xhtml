@@ -92,7 +92,7 @@
 
                     <!-- [I] Configurações -->
                     <li><h:form>
-                            <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clientprofile.xhtml')}"/>
+                            <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}"/>
 
 
                             <!-- [I] Logout Button -->
@@ -109,7 +109,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Sair</h4>
+                        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-sign-out sgr-panel-icon"></i> Sair</h4>
                     </div>
                     <div class="modal-body">
                         Lembre-se de que você <strong>não poderá encerrar</strong> a seção após <strong>realizar um ou mais pedidos</strong>.
@@ -117,8 +117,8 @@
                     <div class="modal-footer">
 
                         <h:form>
-                            <p:commandButton class="btn btn-default" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
-                            <p:commandButton class="btn btn-primary" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
+                            <p:commandButton class="btn btn-default btn-xs" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
+                            <p:commandButton class="btn btn-primary btn-xs" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
 
                     </div>
                 </div>
@@ -152,22 +152,23 @@
                             </div>
 
                             <div class="panel-body">
-                                <div class="row clearfix">
-                                    <div class="table-responsive">                                      
+                                <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
+                                    <div class="table-responsive">   
+                                        
                                         <!-- @ UPDATER -->
                                         <p:poll interval="30" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
                                         
                                         <p:dataTable tableStyleClass="table table-striped" id="movimento" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
 
-                                            <p:column headerText="Item" style="text-align: left;" class="sgr_p">
+                                            <p:column headerText="Item" style="text-align: left;" class="sgr_p" width="200px;">
                                                 <h:outputText value="#{movimento.item}" />
                                             </p:column>
 
-                                            <p:column headerText="Quantidade" style="text-align: center;" class="sgr_p">
+                                            <p:column headerText="Qnt." style="text-align: center;" class="sgr_p" width="32px;">
                                                 <h:outputText value="#{movimento.quantidade}" />
                                             </p:column>  
 
-                                            <p:column headerText="Preço" style="text-align: center;" class="sgr_p">
+                                            <p:column headerText="Preço" style="text-align: center;" width="90px;" class="sgr_p">
                                                 R$
                                                 <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" class="sgr_p" >
                                                     <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
@@ -184,7 +185,7 @@
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
                                                     <h:outputText class="label label-success sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelando')}" >
+                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
                                                     <h:outputText class="label label-warning sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
@@ -195,8 +196,8 @@
                                                 </p:outputPanel>
                                             </p:column>
                                             
-                                            <p:column>   
-                                                <p:commandButton update="movimento" class="btn btn-default btn-xs" ajax="false" value="Cancelar" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
+                                            <p:column>                                                   
+                                                <p:commandButton update="movimento" class="btn btn-danger btn-xs" ajax="false" value="Cancelar" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
                                             </p:column>
 
                                         </p:dataTable>
@@ -206,7 +207,7 @@
                             </div>
 
                             <div class="panel-footer">
-                                <p:commandButton ajax="false" class="btn btn-default btn-sm" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
+                                <p:commandButton ajax="false" class="btn btn-default btn-xs" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
                             </div>
 
                         </div>
@@ -305,7 +306,7 @@
                 <!-- [I] Funções de Conta -->
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-sm" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
+                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-xs" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
 
                 </ul>
 

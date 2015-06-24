@@ -1,7 +1,7 @@
 <!--
-    SGR BETA
-    File: MAINCLIENT.JSP | Last Major Update: 20.04.2015
-    Developer: Kevin Raian
+    SGR ALPHA
+    File: MENU.XHTML | Last Major Update: 23.06.2015
+    Developer: Kevin Raian e Washington Reis
     IDINALOG REBORN © 2015
 -->
 
@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui" lang="pt_br"
       xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:b="http://bootsfaces.net/ui" xmlns:o="http://openfaces.org/">
- 
+
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
@@ -27,38 +27,134 @@
         <script  src="js/jquery-2.1.3.js"></script>
         <!-- Carrega Plugins Avulsos -->		
         <script src="js/bootstrap.js"></script>
-
     </h:head>
 
-    <h:body>
+    <h:body style="padding-top: 70px; padding-bottom: 70px;">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+
+                    <!-- [I] Logo -->                
+                    <a class="navbar-brand" href="#">
+                        <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
+                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
+                    </a>
+
+                    <!-- [F] Exibição do Usuário -->
+                    <p class="navbar-text" >Olá, <b>#{clientController.clientBean.nome}</b>!</p>     
+                    <p class="navbar-text">Mesa <span class="badge">#{clientController.tableBean.numero}</span></p>
+                </div>
+
+                <!-- [F] Informações -->
+                <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
+                                                                        aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock"></span></b></p>               
+
+                <!-- [S] Script Hora -->
+                <script type="text/javascript">
+                    //<![CDATA[
+                    function clock()
+                    {
+                        var digital = new Date();
+                        var hours = digital.getHours();
+                        var minutes = digital.getMinutes();
+                        var seconds = digital.getSeconds();
+                        if (minutes <= 9)
+                            minutes = "0" + minutes;
+                        if (seconds <= 9)
+                            seconds = "0" + seconds;
+                        dispTime = hours + ":" + minutes + ":" + seconds;
+                        var basicclock = document.getElementById('basicclock');
+                        basicclock.innerHTML = dispTime;
+                        setTimeout("clock()", 1000);
+                    }
+                    clock();
+                    //]]>
+                </script>                    
+
+                <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
+                                                                       aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate"></span></b></p>
+
+                <!-- [S] Script Data -->
+                <script type="text/javascript">
+                    //<![CDATA[
+                    var now = new Date();
+                    var days = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
+                    var months = new Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+                    var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
+                    var year = (now.getYear() < 1000) ? now.getYear() + 1900 : now.getYear();
+                    today = days[now.getDay()] + ", " + date + " de " + months[now.getMonth()] + ", " + year;
+                    var basicdate = document.getElementById('basicdate');
+                    basicdate.innerHTML = today;
+                    //]]>
+                </script>
+
+                <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
+
+                    <!-- [I] Configurações -->
+                    <li><h:form>
+                            <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}"/>
+
+
+                            <!-- [I] Logout Button -->
+                            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">Sair</button>
+                        </h:form></li>
+                </ul>       
+
+            </div>                 
+        </nav>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Sair</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lembre-se de que você <strong>não poderá encerrar</strong> a seção após <strong>realizar um ou mais pedidos</strong>.
+                    </div>
+                    <div class="modal-footer">
+
+                        <h:form>
+                            <p:commandButton class="btn btn-default" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
+                            <p:commandButton class="btn btn-primary" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [I] Fim do Painel Principal -->
 
         <p:dialog style="margin-left: 48%;margin-top: 20%" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
             <img src="img/ajax-loader.gif" class="img-responsive"></img>	
         </p:dialog>
+
         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
         <h:form id="frmP">
 
-            <div style="width: 100%" class="container">
+            <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-6">                        
                         <div class="panel panel-default">
 
                             <!-- Cabeçalho Painel -->                                
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-cutlery" style="color:#D45744;"></i> Cardápio</h3>
+                                <h5><i class="fa fa-cutlery sgr-panel-icon"></i> Cardápio</h5>
                             </div>
 
                             <!-- Controles do Cardápio -->    
                             <div class="panel-body">
 
-                                <span style="margin-right:10px;font-size:14px;z-index: 1000">Selecione o Tipo de Prato:</span>                              
-                                <h:selectOneMenu style="padding:3px;width:140px;height:35px;" value="#{menuController.selectedItemType}">
-                                    <f:selectItem itemLabel="Todos" itemValue="Todos" />
-                                    <f:selectItems var="item"  itemLabel="#{item.tipo}" itemValue="#{item.tipo}"  value="#{menuController.itemTypes}"   />
-                                    <f:ajax render="menuItems" listener="#{menuController.showSelectedTypeItems()}" event="click"/>
-                                </h:selectOneMenu>
-                                <p:commandButton onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()" class="btn btn-default" value="Voltar à Tela Principal" style="float:right;" actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
-
+                                <p><span style="margin-right:10px;font-size:14px;z-index: 1000">Selecione:</span>                            
+                                    <h:selectOneMenu style="padding:3px;width:140px;height:35px;" value="#{menuController.selectedItemType}">
+                                        <f:selectItem itemLabel="Todos" itemValue="Todos" />
+                                        <f:selectItems var="item"  itemLabel="#{item.tipo}" itemValue="#{item.tipo}"  value="#{menuController.itemTypes}"   />
+                                        <f:ajax render="menuItems" listener="#{menuController.showSelectedTypeItems()}" event="click"/>
+                                    </h:selectOneMenu>
+                                    <p:commandButton onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()" class="btn btn-default btn-xs" value="Voltar à Tela Principal" style="float:right;" actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
+                                </p>  
 
                                 <!-- Espaço em Branco -->
                                 <div style="padding-bottom: 20px;">
@@ -69,22 +165,18 @@
                                     <div class="table-responsive">                              
 
                                         <p:dataTable  id="menuItems" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="item" value="#{menuController.itemList}">
-                                            <p:column width="6%" headerText="Código">
-                                                <h:outputText style="color:#D45744;" value="#{item.codigo}"   />                                    
-                                            </p:column>
-
-                                            <p:column width="20%" headerText="Item">
+                                            <p:column width="130px" headerText="Item" style="text-align: left;" class="sgr_p">
                                                 <h:outputText style="color:#D45744;" value="#{item.nome}" id="itemName"  />                                    
                                             </p:column>
-                                            <p:column headerText="Descrição" style="align:left;text-align:left" >
-                                                <h:outputText value="#{item.composicao}" id="itemComposition" />
+                                            <p:column headerText="Descrição" style="text-align:left;" class="sgr_p">
+                                                <h:outputText value="#{item.composicao}" style="font-size:12px;" id="itemComposition" />
                                             </p:column>
-                                            <p:column width="15%" headerText="Preço" style="align:center;text-align:center;">
-                                                <h:outputText value="R$ #{item.preco}" id="itemPrice" />
+                                            <p:column width="90px;" headerText="Preço" style="text-align:center;" class="sgr_p">
+                                                R$ <b><h:outputText value="#{item.preco}" id="itemPrice" class="sgr_price"/></b>
                                             </p:column>
 
-                                            <p:column headerText="Quantidade" width="15%" style="text-align: center" >
-                                                <p:commandButton ajax="false" value="+" actionListener="#{menuController.addOrderItem(item)}" update=":frmP" />
+                                            <p:column headerText="Qnt." width="50px;" style="text-align: center;" class="sgr_p">
+                                                <p:commandButton class="btn btn-default btn-xs bt_fix_add" ajax="false" value="+" actionListener="#{menuController.addOrderItem(item)}" update=":frmP" />
                                             </p:column>
                                         </p:dataTable>  
 
@@ -100,54 +192,53 @@
                     <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-check-square" style="color:#D45744;"></i> Items do Pedido</h3>
+                                <h5><i class="fa fa-check-square sgr-panel-icon"></i> Items do Pedido</h5>
                             </div>
 
                             <div class="panel-body">
 
-
-                                <span style="margin-right:10px;font-size:14px;">Total de Items</span><span class="badge">#{menuController.orderBuilderList.size()}</span>
-                                <h:commandButton  class="btn btn-default" value="Limpar Pedido" style="float:right;" actionListener="#{menuController.clearOrderBuilder()}" />
-
+                                <p>
+                                    <span style="margin-right:10px;font-size:14px;">Total de Items</span><span class="badge">#{menuController.orderBuilderList.size()}</span>
+                                    <h:commandButton  class="btn btn-default" value="Limpar Pedido" style="float:right;" actionListener="#{menuController.clearOrderBuilder()}" />
+                                </p>
 
                                 <div style="padding-bottom: 30px;">
                                 </div>
 
-
                                 <div class="row" style="max-height:500px;overflow-y: scroll;">
                                     <p:dataTable id="currentOrder" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="itemSelecionado" value="#{menuController.orderBuilderList}">
-                                        <p:column headerText="">
+                                        <p:column headerText="Item" class="sgr_p" style="text-align:left;">
                                             <h:outputText style="color:#D45744;" value="#{itemSelecionado.nome}" id="itemName"  />                                    
                                         </p:column>                                
-                                        <p:column headerText="Qnt." style="align:center;text-align:center;">
-                                            <h:outputText value="#{itemSelecionado.quantidade}"  style="font-weight: bold;font-size: 22px;color: red" />
+                                        <p:column headerText="Qnt." style="text-align:center;" class="sgr_p">
+                                            <h:outputText value="#{itemSelecionado.quantidade}"  style="font-weight: bold;" />
                                         </p:column>
 
-                                        <p:column headerText="Valor Unitário" style="align:center;text-align:center;">
-                                            <h:outputText value="#{itemSelecionado.preco}"  style="font-weight: bold;font-size: 22px;color: red" >
+                                        <p:column headerText="Valor Unitário" style="text-align:center;" class="sgr_p">
+                                            R$
+                                            <h:outputText value="#{itemSelecionado.preco}"  class="sgr_price" >
                                                 <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
                                             </h:outputText>
                                         </p:column>
 
 
-                                        <p:column style="width:50px;">  
-                                            <p:commandButton onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()"  value="-" actionListener="#{menuController.deletar(itemSelecionado)}" update=":frmP"  />
+                                        <p:column style="width:60px;">  
+                                            <p:commandButton class="btn btn-default btn-xs bt_fix_add" onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()"  value="-" actionListener="#{menuController.deletar(itemSelecionado)}" update=":frmP"  />
                                         </p:column>                                               
                                     </p:dataTable>
-                                </div> 
+                                </div>                                
+                            </div>
+                            <!-- @ Footer do Painel -->
+                            <div class="panel-footer" style="height: 55px;" id="orderFooter">
+                                <span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;padding-top: 5px;"></span><b>Total deste Pedido:</b><span class="ft-values">
+                                    R$ <h:outputText value="#{menuController.subTotal}" >
+                                        <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>]
+                                    </h:outputText>    
 
-                                <!-- @ Footer do Painel -->
-                                <div class="panel-footer" style="height: 55px;" id="orderFooter">
-                                    <span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;padding-top: 5px;"></span><b>Total deste Pedido:</b><span class="ft-values">
-                                        R$ <h:outputText value="#{menuController.subTotal}" >
-                                            <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>]
-                                        </h:outputText>    
+                                </span>
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#orderModal" style="float:right;">Efetuar Pedido 
 
-                                    </span>
-                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#orderModal" style="float:right;">Efetuar Pedido 
-
-                                    </button>
-                                </div>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -180,14 +271,14 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Sair</h4>
+                            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-sign-out sgr-panel-icon"></i> Sair</h4>
                         </div>
                         <div class="modal-body">
-                            Lembre-se de que você <strong>não poderá encerrar</strong> a seção após <strong>realizar um ou mais pedidos</strong>.
+                           Lembre-se de que você <strong>não poderá encerrar</strong> a seção após <strong>realizar um ou mais pedidos</strong>.
                         </div>
                         <div class="modal-footer">
 
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><p:commandButton  class="btn btn-primary" value="Sair" actionListener="#{clientController.doLogout()}"/>
+                            <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancelar</button><p:commandButton  class="btn btn-primary btn-xs" value="Sair" actionListener="#{clientController.doLogout()}"/>
 
                         </div>
                     </div>
@@ -215,7 +306,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><h:form><p:commandButton class="btn btn-success" value="Confirmar" actionListener="#{menuController.buildOrder()}" ajax="false" /></h:form>
+                        <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><p:commandButton class="btn btn-success btn-xs " value="Confirmar" actionListener="#{menuController.buildOrder()}" ajax="false" /></h:form>
                     </div>
                 </div>
             </div>
