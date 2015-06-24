@@ -73,7 +73,7 @@ public class MenuController {
         boolean itemStatus = false;
         System.out.println("STATUS DA CONTA:" + clientLogado.getSessionBean().isStatus());
         for (int i = 0; i < clientLogado.listaMovimento.size(); i++) {
-            if (!clientLogado.listaMovimento.get(i).getItemStatus().equals("Entregue")) {
+            if ((clientLogado.listaMovimento.get(i).getItemStatus().equals("Solicitado")) || (clientLogado.listaMovimento.get(i).getItemStatus().equals("Pronto"))) {
                 itemStatus = false;
             } else {
                 itemStatus = true;
@@ -104,8 +104,8 @@ public class MenuController {
     public void solicitarCancelamento(MovimentoBean pMovimento) {
         ContaItemService contaItemService = new ContaItemService();
 
-        if (!(pMovimento.getItemStatus().equals("Solicitado"))) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode cancelar o item pois o mesmo já foi entregue, ou se encontra em preparo.", ""));
+        if (pMovimento.getItemStatus().equals("Entregue")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Você não pode cancelar o item pois o mesmo já foi entregue.", ""));
         } else {
 
             contaItemBean.setCodigo(pMovimento.getContaItemCodigo());

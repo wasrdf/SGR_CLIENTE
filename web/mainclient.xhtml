@@ -170,7 +170,7 @@
 
 
                                         <p:dataTable   paginator="true" rowsPerPageTemplate="5" rows="5" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
-                                            <p:column  headerText="Item">
+                                           <p:column  headerText="Item">
                                                 <h:outputText value="#{movimento.item}" />
                                             </p:column>
 
@@ -198,21 +198,17 @@
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
                                                     <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
+                                                
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
                                                     <h:outputText style="color: #28a4c9;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
+                                            
                                                 <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
                                                     <h:outputText style="color: blue;background-color: #888;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
-
-                                                <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
-                                                    <h:outputText style="color: violet;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                                                </p:outputPanel>
-
+                                            
                                             </p:column>
-
+                                          
                                             <p:column headerText="Solicitação de cancelamento" >   
                                                 <p:commandButton update="movimento" class="btn btn-default" ajax="false" value="Solicitar Cancelamento" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
                                             </p:column>
@@ -223,7 +219,7 @@
 
                             <div class="panel-footer">
                                 <p:commandButton ajax="false"  class="btn btn-default" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
-
+                                
 
                                 <span> Total: 0,00 </span>
 
