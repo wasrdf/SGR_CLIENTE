@@ -24,6 +24,7 @@ import sgr.bean.ContaItemBean;
 import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
 import sgr.dao.ExceptionDAO;
+import sgr.dao.SessionDAO;
 import sgr.dao.TableDAO;
 import sgr.service.ItemService;
 import sgr.service.MovimentoService;
@@ -52,6 +53,7 @@ public class MenuController {
     private List<SessionBean> listSession = new ArrayList<SessionBean>();
 
     private ContaItemBean contaItemBean = new ContaItemBean();
+    
     // Lists
     private List<ItemBean> itemTypes = new ArrayList<ItemBean>();
     private List<ItemBean> itemList = new ArrayList<ItemBean>();
@@ -135,6 +137,8 @@ public class MenuController {
             System.out.println(orderBuilderList.get(i).getQuantidade()+" - " + pItem.getQuantidade());
             if (orderBuilderList.get(i).getCodigo() == pItem.getCodigo()) {
                 orderBuilderList.get(i).setQuantidade(orderBuilderList.get(i).getQuantidade() + 1);
+                subTotal = subTotal + (orderBuilderList.get(i).getPreco());
+                
                 encontrou = true;
             }
 
@@ -145,6 +149,7 @@ public class MenuController {
 
         } else {
             pItem.setQuantidade(1);
+            subTotal =  subTotal + pItem.getPreco();
             orderBuilderList.add(pItem);
 
         }
@@ -154,14 +159,28 @@ public class MenuController {
     public void goTo(String page) throws IOException {
         FacesContext ctx = FacesContext.getCurrentInstance();
         FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + page);
+        subTotal = 0;
+        orderBuilderList = new ArrayList<ItemBean>();
     }
 
     // <editor-fold desc="GET and SET">
     public void deletar(ItemBean pItem) {
         // orderBuilderItem.setQuantidade(0);
-        orderBuilderItem = pItem;
-
-        orderBuilderList.remove(orderBuilderItem);
+        
+      
+            
+            if(pItem.getQuantidade() == 1) {
+               
+                subTotal = subTotal - pItem.getPreco();
+                orderBuilderList.remove(pItem);
+            } else {
+                pItem.setQuantidade(pItem.getQuantidade() - 1);
+                subTotal = subTotal - pItem.getPreco();
+      
+        }
+        
+        
+        
 
     }
 
@@ -227,7 +246,11 @@ public class MenuController {
                 orderItemService.salvarPedidoItem(contaItemBean);
             }
 
-            contaTotal = contaTotal + subTotal;
+            SessionDAO sessionDAO = new SessionDAO();
+            //aqui eu calculo o valor total da conta
+            clientLogado.sessionBean.setTotal(clientLogado.sessionBean.getTotal() +subTotal);
+            sessionDAO.calcularTotal(clientLogado.sessionBean);
+            
             MovimentoService movimentoService = new MovimentoService();
             //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
             clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(), clientLogado.getTableBean().getNumero());

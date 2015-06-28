@@ -172,7 +172,7 @@
                                                 <h:outputText value="#{item.composicao}" style="font-size:12px;" id="itemComposition" />
                                             </p:column>
                                             <p:column width="90px;" headerText="Preço" style="text-align:center;" class="sgr_p">
-                                                R$ <b><h:outputText value="#{item.preco}" id="itemPrice" class="sgr_price"/></b>
+                                                R$ <b><h:outputText value="#{item.preco}" id="itemPrice" class="sgr_price"> <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/> </h:outputText></b>
                                             </p:column>
 
                                             <p:column headerText="Qnt." width="50px;" style="text-align: center;" class="sgr_p">
@@ -245,24 +245,7 @@
                 </div>
             </div>             
 
-            <!-- [I] Footer -->
-            <nav class="navbar navbar-default navbar-fixed-bottom">
-                <div class="container">
-
-                    <!-- [F] Informações de Conta e Pedidos -->
-                    <ul class="nav navbar-nav">
-                        <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> 15</span></p></li>
-                        <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ 00,00</span></p></li>
-                    </ul>
-
-                    <!-- [I] Funções de Conta -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><button type="button" class="btn btn-danger" style="margin-top:7px;">Encerrar Conta</button></li>
-                    </ul>
-
-                </div>
-            </nav>
-
+         
             <!-- [M] Modal -->
 
             <!-- Modal -->
@@ -293,7 +276,7 @@
             <script src="js/bootstrap.js"></script>
         </h:form>
 
-
+          <ui:include src="masterfooter.xhtml"/>     
         <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -302,7 +285,7 @@
                         <h4 class="modal-title" id="myModalLabel"><i class="fa fa-check-square-o sgrc"></i> Efetuar Pedido</h4>
                     </div>
                     <div class="modal-body">
-                        Seu pedido de <span class="badge">4</span> items no total de <b>R$ <h:outputText value="#{menuController.subTotal}" >  <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/> </h:outputText> </b> será confirmado. Deseja continuar?
+                        Seu pedido de <span class="badge">#{menuController.orderBuilderList.size()}</span> items no total de <b>R$ <h:outputText value="#{menuController.subTotal}" >  <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/> </h:outputText> </b> será confirmado. Deseja continuar?
 
                     </div>
                     <div class="modal-footer">

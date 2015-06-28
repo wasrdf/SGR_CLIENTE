@@ -29,105 +29,11 @@
         <script src="js/bootstrap.js"></script>
     </h:head>
 
-    <h:body style="padding-top: 70px;">       
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-
-                    <!-- [I] Logo -->                
-                    <a class="navbar-brand" href="#">
-                        <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
-                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
-                    </a>
-
-                    <!-- [F] Exibição do Usuário -->
-                    <p class="navbar-text" >Olá, <b>#{clientController.clientBean.nome}</b>!</p>     
-                    <p class="navbar-text">Mesa <span class="badge">#{clientController.tableBean.numero}</span></p>
-                </div>
-
-                <!-- [F] Informações -->
-                <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
-                                                                        aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock"></span></b></p>               
-
-                <!-- [S] Script Hora -->
-                <script type="text/javascript">
-                    //<![CDATA[
-                    function clock()
-                    {
-                        var digital = new Date();
-                        var hours = digital.getHours();
-                        var minutes = digital.getMinutes();
-                        var seconds = digital.getSeconds();
-                        if (minutes <= 9)
-                            minutes = "0" + minutes;
-                        if (seconds <= 9)
-                            seconds = "0" + seconds;
-                        dispTime = hours + ":" + minutes + ":" + seconds;
-                        var basicclock = document.getElementById('basicclock');
-                        basicclock.innerHTML = dispTime;
-                        setTimeout("clock()", 1000);
-                    }
-                    clock();
-                    //]]>
-                </script>                    
-
-                <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
-                                                                       aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate"></span></b></p>
-
-                <!-- [S] Script Data -->
-                <script type="text/javascript">
-                    //<![CDATA[
-                    var now = new Date();
-                    var days = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
-                    var months = new Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
-                    var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
-                    var year = (now.getYear() < 1000) ? now.getYear() + 1900 : now.getYear();
-                    today = days[now.getDay()] + ", " + date + " de " + months[now.getMonth()] + ", " + year;
-                    var basicdate = document.getElementById('basicdate');
-                    basicdate.innerHTML = today;
-                    //]]>
-                </script>
-
-                <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
-
-                    <!-- [I] Configurações -->
-                    <li><h:form>
-                            <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}"/>
-
-
-                            <!-- [I] Logout Button -->
-                            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">Sair</button>
-                        </h:form></li>
-                </ul>       
-
-            </div>                 
-        </nav>
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-sign-out sgr-panel-icon"></i> Sair</h4>
-                    </div>
-                    <div class="modal-body">
-                        Lembre-se de que você <strong>não poderá encerrar</strong> a seção após <strong>realizar um ou mais pedidos</strong>.
-                    </div>
-                    <div class="modal-footer">
-
-                        <h:form>
-                            <p:commandButton class="btn btn-default btn-xs" ajax="false" value="Cancelar"  actionListener="#{clientController.goTo('/mainclient.xhtml')}"/>
-                            <p:commandButton class="btn btn-primary btn-xs" ajax="false" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- [I] Fim do Painel Principal -->
+    <h:body style="padding-top: 70px;"> 
+        <ui:include src="masterheader.xhtml" />        
 
         <!-- [I] Display Principal -->
-        <h:form id="frmPrincipal" rendered="#{clientController.tela == 0}">
+        <h:form id="frmPrincipal" rendered="#{clientController.tela == 0}" style="padding-bottom: 50px;">
             <div class="container">
                 <div class="row clearfix">
                     <div class="col-md-6 column">
@@ -139,7 +45,7 @@
                             </div>
                             <div class="panel-body">
                                 <img src="img/cardapio-header.jpg" class="img-responsive panel-image-full"></img>
-                                <h:commandButton class="btn btn-default" value="Consultar Cardápio" actionListener="#{clientController.goTo('/menu.xhtml')}"/>
+                                <h:commandButton class="btn btn-default" value="Consultar Cardápio" actionListener="#{menuController.goTo('/menu.xhtml')}"/>
 
                             </div>
                         </div>
@@ -154,10 +60,10 @@
                             <div class="panel-body">
                                 <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
                                     <div class="table-responsive">   
-                                        
+
                                         <!-- @ UPDATER -->
                                         <p:poll interval="30" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
-                                        
+
                                         <p:dataTable tableStyleClass="table table-striped" id="movimento" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
 
                                             <p:column headerText="Item" style="text-align: left;" class="sgr_p" width="200px;">
@@ -195,19 +101,20 @@
                                                     <h:outputText class="label label-info sgr_d" value="#{movimento.itemStatus}" />  
                                                 </p:outputPanel>
                                             </p:column>
-                                            
+
                                             <p:column>                                                   
                                                 <p:commandButton update="movimento" class="btn btn-danger btn-xs" ajax="false" value="Cancelar" actionListener="#{menuController.solicitarCancelamento(movimento)}" />
                                             </p:column>
 
                                         </p:dataTable>
-                                        
+
                                     </div>
                                 </div>
                             </div>
 
                             <div class="panel-footer">
                                 <p:commandButton ajax="false" class="btn btn-default btn-xs" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
+                                <p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-xs" value="Encerrar Conta" />
                             </div>
 
                         </div>
@@ -248,7 +155,7 @@
                                         <table>
                                             <tr>
                                                 <td style="padding-bottom: 5px;">
-                                                   <img src="img/highlight_01.png" class="img-responsive panel-image-full"></img>
+                                                    <img src="img/highlight_01.png" class="img-responsive panel-image-full"></img>
                                                 </td>                                        
                                                 <td class="highlight_content">                                                    
                                                     <span class="highlight_h">Combo Oriental Lótus</span>
@@ -259,7 +166,7 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 5px;">
-                                                   <img src="img/highlight_02.png" class="img-responsive panel-image-full"></img> 
+                                                    <img src="img/highlight_02.png" class="img-responsive panel-image-full"></img> 
                                                 </td>
                                                 <td class="highlight_content">                                                    
                                                     <span class="highlight_h">Especial Thai</span>
@@ -270,7 +177,7 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 5px;">
-                                                   <img src="img/highlight_03.png" class="img-responsive panel-image-full"></img> 
+                                                    <img src="img/highlight_03.png" class="img-responsive panel-image-full"></img> 
                                                 </td>
                                                 <td class="highlight_content">                                                    
                                                     <span class="highlight_h">Pizza Calabresa Mestre</span>
@@ -292,34 +199,8 @@
                 </div>
             </div>                
         </h:form>
-        <!-- -->           
 
-        <nav class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container">
-
-                <!-- [F] Informações de Conta e Pedidos -->
-                <ul class="nav navbar-nav">
-                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> #{clientController.listaMovimento.size()}</span></p></li>
-                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ #{menuController.contaTotal}</span></p></li>
-                </ul>
-
-                <!-- [I] Funções de Conta -->
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><h:form><p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-xs" style="margin-top:7px;" value="Encerrar Conta" /></h:form></li>
-
-                </ul>
-
-            </div>
-
-        </nav>
-
-
-
-
-
-
-
+        <ui:include src="masterfooter.xhtml"/>     
 
     </h:body>
 

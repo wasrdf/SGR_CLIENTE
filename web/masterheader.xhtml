@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <!-- Carrega Bootstrap e CSS Extra -->
+        <link href="css/bootstrap.css" rel="stylesheet"></link>
+        <link href="css/sgr.css" rel="stylesheet"></link>
+        <link href="css/mainclient.css" rel="stylesheet"></link>
+        <link href="css/font-awesome.css" rel="stylesheet"></link>  
+        <link rel="icon" type="image/png" href="img/favicon.png"></link> 
+    </h:head>
+
+    <h:body>
+
+        <!-- AJAX Loader -->
+        <p:dialog style="margin-left: 48%;margin-top: 20%" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <img src="img/ajax-loader.gif" class="img-responsive"></img>	
+        </p:dialog>               
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <!-- Header -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <!-- Alternar Navegação Mobile -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand hidden-xs" href="#">
+                        <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
+                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"/>
+                    </a>
+                </div>
+
+                <!-- Área Alternável -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav" style="margin-left:5px;">
+                        <p class="navbar-text">
+                            Olá, <b>#{clientController.clientBean.nome}</b>!<span style="margin-left:15px;"/>Mesa <span class="badge">#{clientController.tableBean.numero}</span>
+                        </p>
+                    </ul>
+                    <ul class="nav navbar-nav" style="margin-left:5px;">
+                        <!-- [F] Informações -->
+                        <p class="navbar-text">
+                        <span class="glyphicon glyphicon-time" aria-hidden="true" style="color:#D45744; 
+                              margin-right:5px;"></span><b><span id="basicclock"></span></b>               
+
+                        <!-- [S] Script Hora -->
+                        <script type="text/javascript">
+                            //<![CDATA[
+                            function clock()
+                            {
+                                var digital = new Date();
+                                var hours = digital.getHours();
+                                var minutes = digital.getMinutes();
+                                var seconds = digital.getSeconds();
+                                if (minutes <= 9)
+                                    minutes = "0" + minutes;
+                                if (seconds <= 9)
+                                    seconds = "0" + seconds;
+                                dispTime = hours + ":" + minutes + ":" + seconds;
+                                var basicclock = document.getElementById('basicclock');
+                                basicclock.innerHTML = dispTime;
+                                setTimeout("clock()", 1000);
+                            }
+                            clock();
+                            //]]>
+                        </script>   
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true" style="color:#D45744; 
+                              margin-right:5px;margin-left:15px;"></span><b><span id="basicdate"></span></b>
+                        </p>
+
+                        <!-- [S] Script Data -->
+                        <script type="text/javascript">
+                            //<![CDATA[
+                            var now = new Date();
+                            var days = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
+                            var months = new Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+                            var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
+                            var year = (now.getYear() < 1000) ? now.getYear() + 1900 : now.getYear();
+                            today = days[now.getDay()] + ", " + date + " de " + months[now.getMonth()] + ", " + year;
+                            var basicdate = document.getElementById('basicdate');
+                            basicdate.innerHTML = today;
+                            //]]>
+                        </script>
+                                                
+                    </ul>
+
+                    <h:form class="navbar-form navbar-right">
+                        <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}" />
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Sair</button>
+                    </h:form>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Sair</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lembre-se de que você <strong>não poderá encerrar</strong> a seção após <strong>realizar um ou mais pedidos</strong>.
+                    </div>
+                    <div class="modal-footer">
+
+                        <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><h:commandButton class="btn btn-primary" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

@@ -60,9 +60,8 @@ public class ClientController {
     ClientBean clienteAtualizado = new ClientBean();
     TableBean tableBean = new TableBean();
     MovimentoBean movimento = new MovimentoBean();
-
-    ContaItemBean orderItemsBean = new ContaItemBean();
     SessionBean sessionBean = new SessionBean();
+    ContaItemBean orderItemsBean = new ContaItemBean();
     // Lists
     List<ClientBean> listClient = new ArrayList<ClientBean>();
     List<TableBean> listTable = new ArrayList<TableBean>();
@@ -311,11 +310,18 @@ public class ClientController {
     }
     
     public void recarregarMovimentos() {
-        System.out.println("primeiro");
+        SessionService sessionService = new SessionService();
         MovimentoService movimentoService = new MovimentoService();
         listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
         System.out.println("tamanho da lista: " + listaMovimento.size());
-
+        try {  
+            listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+            sessionBean = listSession.get(0);
+        } catch (ExceptionDAO ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // MÉTODO 02 - doLogout()
@@ -521,5 +527,46 @@ public class ClientController {
     public void setTela(Integer tela) {
         this.tela = tela;
     }
+
+    public boolean isSessionOpened() {
+        return sessionOpened;
+    }
+
+    public void setSessionOpened(boolean sessionOpened) {
+        this.sessionOpened = sessionOpened;
+    }
+
+    public ContaItemBean getOrderItemsBean() {
+        return orderItemsBean;
+    }
+
+    public void setOrderItemsBean(ContaItemBean orderItemsBean) {
+        this.orderItemsBean = orderItemsBean;
+    }
+
+    public List<ClientBean> getListClient() {
+        return listClient;
+    }
+
+    public void setListClient(List<ClientBean> listClient) {
+        this.listClient = listClient;
+    }
+
+    public List<TableBean> getListTable() {
+        return listTable;
+    }
+
+    public void setListTable(List<TableBean> listTable) {
+        this.listTable = listTable;
+    }
+
+    public List<SessionBean> getListSession() {
+        return listSession;
+    }
+
+    public void setListSession(List<SessionBean> listSession) {
+        this.listSession = listSession;
+    }
+    
 
 }

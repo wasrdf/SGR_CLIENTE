@@ -7,14 +7,23 @@
 
 package sgr.bean;
 
-import javax.faces.bean.ManagedBean;
-
 public class SessionBean {
     
     private int codigo;
     private boolean status;
     private int c_codigo;
     private String c_cpf;
+    private double total;
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
+    
 
     public boolean isStatus() {
         return status;
