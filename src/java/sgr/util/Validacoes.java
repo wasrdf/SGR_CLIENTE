@@ -6,12 +6,14 @@
 package sgr.util;
 
 import java.util.InputMismatchException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Cross
  */
-public class ValidarCpf {
+public class Validacoes {
  
   public static boolean isCPF(String CPF) {
 // considera-se erro CPF's formados por uma sequencia de numeros iguais
@@ -73,11 +75,29 @@ public class ValidarCpf {
       CPF.substring(6, 9) + "-" + CPF.substring(9, 11));
   }
   
+   public static boolean validarEmail(String pEmail) {
+      
+        System.out.println("Metodo de validacao de email");
+        Pattern p = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$");
+        Matcher m = p.matcher(pEmail);
+        if (m.find()) {
+            System.out.println("O email " + pEmail + " e valido");
+            return true;
+        } else {
+            System.out.println("O E-mail " + pEmail + " é inválido");
+            return false;
+        }
+    }
+  
   public static void main(String[]args) {
-      //!ValidarCpf.isCPF(parceiro.getCpf_cnpj().replace(".", "").replace("-", ""))
+      //!Validacoes.isCPF(parceiro.getCpf_cnpj().replace(".", "").replace("-", ""))
      
       
-      if(ValidarCpf.isCPF("127.329.437-89".replace(".", "").replace("-", ""))) {
+      
+      
+      
+      
+      if(Validacoes.isCPF("127.329.437-89".replace(".", "").replace("-", ""))) {
           System.out.println("cpf valido");
       }else{
           System.out.println("cpf invalido");
