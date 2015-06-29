@@ -310,12 +310,11 @@ public class ClientController {
     public void recarregarMovimentos() {
         SessionService sessionService = new SessionService();
         MovimentoService movimentoService = new MovimentoService();
-        listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
-        System.out.println("tamanho da lista: " + listaMovimento.size());
         try {
-            listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
-            sessionBean = listSession.get(0);
-            System.out.println("VALORRRR" + sessionBean.getTotal());
+        listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
+        listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+        sessionBean = listSession.get(0);
+     
         } catch (ExceptionDAO ex) {
             Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
