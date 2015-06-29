@@ -14,13 +14,14 @@
     </h:head>
 
     <h:body>
-
+       
+   
         <!-- AJAX Loader -->
         <p:dialog style="margin-left: 48%;margin-top: 20%" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
             <img src="img/ajax-loader.gif" class="img-responsive"></img>	
         </p:dialog>               
         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-
+       
         <!-- Header -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
@@ -114,7 +115,7 @@
                     <div class="modal-footer">
 
                         <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><h:commandButton class="btn btn-primary" value="Sair" actionListener="#{clientController.doLogout()}"/></h:form>
-
+                       
                     </div>
                 </div>
             </div>

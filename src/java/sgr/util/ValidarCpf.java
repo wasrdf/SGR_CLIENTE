@@ -74,8 +74,10 @@ public class ValidarCpf {
   }
   
   public static void main(String[]args) {
+      //!ValidarCpf.isCPF(parceiro.getCpf_cnpj().replace(".", "").replace("-", ""))
+     
       
-      if(ValidarCpf.isCPF("4515125512")) {
+      if(ValidarCpf.isCPF("127.329.437-89".replace(".", "").replace("-", ""))) {
           System.out.println("cpf valido");
       }else{
           System.out.println("cpf invalido");

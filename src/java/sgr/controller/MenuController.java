@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import sgr.bean.ItemBean;
 import sgr.bean.MovimentoBean;
 import sgr.bean.ContaItemBean;
@@ -89,10 +90,11 @@ public class MenuController {
             tableDAO.gerenciarMesas(tableBean);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
-
+             
         } else {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
+                
         }
 
     }

@@ -15,15 +15,6 @@ public class SessionBean {
     private String c_cpf;
     private double total;
 
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-    
-    
 
     public boolean isStatus() {
         return status;
@@ -56,6 +47,14 @@ public class SessionBean {
 
     public void setC_cpf(String c_cpf) {
         this.c_cpf = c_cpf;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
     
     

@@ -14,10 +14,11 @@
     </h:head>
 
     <h:body>
+        <h:form id="footer">
         <!-- [I] Footer -->
         <nav class="navbar navbar-default navbar-fixed-bottom">
             <div class="container">
-
+                <p:poll update=":footer" interval="30" listener="#{clientController.recarregarMovimentos()}"  />
                 <!-- [F] Informações de Conta e Pedidos -->
                 <ul class="nav navbar-nav" style="margin-left:5px;">
                     <p class="navbar-text" >
@@ -27,5 +28,6 @@
                 </ul>                    
             </div>
         </nav>
+        </h:form>
     </h:body>
 </html>

@@ -30,8 +30,10 @@
     </h:head>
 
     <h:body style="padding-top: 70px;"> 
+
         <ui:include src="masterheader.xhtml" />        
 
+       
         <!-- [I] Display Principal -->
         <h:form id="frmPrincipal" rendered="#{clientController.tela == 0}" style="padding-bottom: 50px;">
             <div class="container">
@@ -114,7 +116,7 @@
 
                             <div class="panel-footer">
                                 <p:commandButton ajax="false" class="btn btn-default btn-xs" actionListener="#{menuController.chamarGarcom()}" value="Chamar Garçom" />
-                                <p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-xs" value="Encerrar Conta" />
+                                <p:commandButton actionListener="#{menuController.solicitarEncerramento()}" ajax="false"  class="btn btn-danger btn-xs" value="Encerrar Conta"  />
                             </div>
 
                         </div>
@@ -187,7 +189,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <h:messages  class="alert alert-warning" showDetail="true" layout="table" style="width:100%"/>
+                                        <p:messages  class="alert alert-warning" showDetail="true"  style="width:100%"/>
+
                                     </div>
                                 </div>
 

@@ -32,6 +32,7 @@ import sgr.dao.ExceptionDAO;
 import sgr.service.MovimentoService;
 import sgr.service.SessionService;
 import sgr.service.TableService;
+import sgr.util.ValidarCpf;
 
 @SessionScoped
 @ManagedBean(name = "clientController")
@@ -86,116 +87,116 @@ public class ClientController {
         session = (HttpSession) ctx.getExternalContext().getSession(false);
         try {
         // ### 01 ###
-        // Identifica Mesa        
-        //currentMac = MACReader.readMAC();
-        System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
-        System.out.println("MINHA MAC = :" + currentMac);
-        
+            // Identifica Mesa        
+            //currentMac = MACReader.readMAC();
+            System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
+            System.out.println("MINHA MAC = :" + currentMac);
+
         //mesa 7
-        //currentMac = "94-DE-80-70-D9-15";
-        //mesa 12
-        //currentMac = "F4-6D-04-90-90-FA";
-        //mesa 5
-        currentMac = "68-17-29-0B-87-6D";
-        listTable = tableService.doTableSearch(currentMac);
-        tableBean = listTable.get(0);
-        System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
+            //currentMac = "94-DE-80-70-D9-15";
+            //mesa 12
+            //currentMac = "F4-6D-04-90-90-FA";
+            //mesa 5
+            currentMac = "68-17-29-0B-87-6D";
+            listTable = tableService.doTableSearch(currentMac);
+            tableBean = listTable.get(0);
+            System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
 
         // ### 02 ###
-        // Busca Cliente      
-        System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
-      
-        listClient = clientService.doLogin(clientUsername, clientPassword);
-        clientBean = listClient.get(0);
+            // Busca Cliente      
+            System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
 
-        listaMovimento = movimentoService.listarMovimentos(listClient.get(0).getCodigo(), tableBean.getNumero());
-        System.out.println("tamanho da lista: " + listaMovimento.size());
+            listClient = clientService.doLogin(clientUsername, clientPassword);
+            clientBean = listClient.get(0);
+
+            listaMovimento = movimentoService.listarMovimentos(listClient.get(0).getCodigo(), tableBean.getNumero());
+            System.out.println("tamanho da lista: " + listaMovimento.size());
 
         // ### 03 ###
-        // Valida dados do Cliente
-        if (clientUsername.equals(clientBean.getNome_usuario()) && (clientPassword.equals(clientBean.getSenha()))) {
+            // Valida dados do Cliente
+            if (clientUsername.equals(clientBean.getNome_usuario()) && (clientPassword.equals(clientBean.getSenha()))) {
 
-            System.out.println("[CLIENT CONTROLLER][03] Cliente encontrado!");
-            System.out.println("[CLIENT CONTROLLER][03] Preparando seção...");
+                System.out.println("[CLIENT CONTROLLER][03] Cliente encontrado!");
+                System.out.println("[CLIENT CONTROLLER][03] Preparando seção...");
 
-            // Inicia Session Service
-            SessionService sessionService = new SessionService();
+                // Inicia Session Service
+                SessionService sessionService = new SessionService();
 
             // ### 04 ###
-            // Abertura de Seção
-            // @ 04.1 
-            // Caso não existam seções abertas uma nova é iniciada
-            if (sessionService.doOpenedSessionSearch(clientBean.getCodigo(), 1) == false) {
+                // Abertura de Seção
+                // @ 04.1 
+                // Caso não existam seções abertas uma nova é iniciada
+                if (sessionService.doOpenedSessionSearch(clientBean.getCodigo(), 1) == false) {
 
-                // Define dados da nova seção
-                sessionBean.setStatus(true);
-                sessionBean.setC_codigo(clientBean.getCodigo());
-                sessionBean.setC_cpf(clientBean.getCpf());
+                    // Define dados da nova seção
+                    sessionBean.setStatus(true);
+                    sessionBean.setC_codigo(clientBean.getCodigo());
+                    sessionBean.setC_cpf(clientBean.getCpf());
 
-                System.out.println("[CLIENT CONTROLLER][04.1] Dados carregados para nova seção: Código do Cliente '" + clientBean.getCodigo() + "' e CPF '"
-                        + clientBean.getCpf() + "'.");
+                    System.out.println("[CLIENT CONTROLLER][04.1] Dados carregados para nova seção: Código do Cliente '" + clientBean.getCodigo() + "' e CPF '"
+                            + clientBean.getCpf() + "'.");
 
-                // Cria nova seção
-                sessionService.newSession(sessionBean);
+                    // Cria nova seção
+                    sessionService.newSession(sessionBean);
 
-                // Adquiri dados da nova seção
-                listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
-                sessionBean = listSession.get(0);
+                    // Adquiri dados da nova seção
+                    listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+                    sessionBean = listSession.get(0);
 
-                System.out.println("[CLIENT CONTROLLER][04.1] Dados da seção atual: Código da Seção '" + sessionBean.getCodigo() + "', Status '" + sessionBean.isStatus()
-                        + "' e Código do Cliente '" + clientBean.getCodigo() + "'.");
+                    System.out.println("[CLIENT CONTROLLER][04.1] Dados da seção atual: Código da Seção '" + sessionBean.getCodigo() + "', Status '" + sessionBean.isStatus()
+                            + "' e Código do Cliente '" + clientBean.getCodigo() + "'.");
 
-                // Salva dados atuais no HTTPSession
-                session.setAttribute("currentClientName", clientBean.getNome());
-                session.setAttribute("currentUserCode", clientBean.getCodigo());
-                session.setAttribute("currentTable", tableBean.getNumero());
-                session.setAttribute("currentSessionCode", sessionBean.getCodigo());
+                    // Salva dados atuais no HTTPSession
+                    session.setAttribute("currentClientName", clientBean.getNome());
+                    session.setAttribute("currentUserCode", clientBean.getCodigo());
+                    session.setAttribute("currentTable", tableBean.getNumero());
+                    session.setAttribute("currentSessionCode", sessionBean.getCodigo());
 
                 // @ 04.2
-                // Caso uma seção aberta seja encontrada ela é recuperada
+                    // Caso uma seção aberta seja encontrada ela é recuperada
+                } else {
+
+                    System.out.println("[CLIENT CONTROLLER][04.2] Seção aberta encontrada! Restaurando seção...");
+                    // Recupera dados da seção aberta
+                    listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+                    sessionBean = listSession.get(0);
+                    System.out.println("[CLIENT CONTROLLER][04.2] Dados da seção atual: Código da Seção '" + sessionBean.getCodigo() + "', Status '" + sessionBean.isStatus()
+                            + "' e Código do Cliente '" + clientBean.getCodigo() + "'.");
+                    System.out.println("[CLIENT CONTROLLER[04.2] Seção restaurada com sucesso!");
+
+                    // Salva dados atuais no HTTPSession
+                    session.setAttribute("currentClientName", clientBean.getNome());
+                    session.setAttribute("currentUserCode", clientBean.getCodigo());
+                    session.setAttribute("currentTable", tableBean.getNumero());
+                    session.setAttribute("currentSessionCode", sessionBean.getCodigo());
+
+                }
+
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/mainclient.xhtml");
+
+                } catch (IOException ex) {
+                    System.out.println("[CLIENT CONTROLLER] ERRO: Não foi possível encontrar a página especificada.");
+                    System.out.println(ex.getMessage());
+                }
+
             } else {
-
-                System.out.println("[CLIENT CONTROLLER][04.2] Seção aberta encontrada! Restaurando seção...");
-                // Recupera dados da seção aberta
-                listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
-                sessionBean = listSession.get(0);
-                System.out.println("[CLIENT CONTROLLER][04.2] Dados da seção atual: Código da Seção '" + sessionBean.getCodigo() + "', Status '" + sessionBean.isStatus()
-                        + "' e Código do Cliente '" + clientBean.getCodigo() + "'.");
-                System.out.println("[CLIENT CONTROLLER[04.2] Seção restaurada com sucesso!");
-
-                // Salva dados atuais no HTTPSession
-                session.setAttribute("currentClientName", clientBean.getNome());
-                session.setAttribute("currentUserCode", clientBean.getCodigo());
-                session.setAttribute("currentTable", tableBean.getNumero());
-                session.setAttribute("currentSessionCode", sessionBean.getCodigo());
+                System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
+                FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
 
             }
 
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/mainclient.xhtml");
-
-            } catch (IOException ex) {
-                System.out.println("[CLIENT CONTROLLER] ERRO: Não foi possível encontrar a página especificada.");
-                System.out.println(ex.getMessage());
-            }
-
-        } else {
-            System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
-            FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
-            
-        } 
-        
         } catch (Exception ex) {
             System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
-          
+
         }
-       
+
     }
 
     public void entrarTemporario() {
-       
+
         // Inicia Services
         ClientService clientService = new ClientService();
         TableService tableService = new TableService();
@@ -206,36 +207,34 @@ public class ClientController {
         session = (HttpSession) ctx.getExternalContext().getSession(false);
         try {
         // ### 01 ###
-        // Identifica Mesa        
-        //currentMac = MACReader.readMAC();
-        System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
-        System.out.println("MINHA MAC = :" + currentMac);
-        
+            // Identifica Mesa        
+            //currentMac = MACReader.readMAC();
+            System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
+            System.out.println("MINHA MAC = :" + currentMac);
+
         //mesa 7
-        //currentMac = "94-DE-80-70-D9-15";
-        //mesa 12
-        //currentMac = "F4-6D-04-90-90-FA";
-        //mesa 5
-        currentMac = "68-17-29-0B-87-6D";
-        listTable = tableService.doTableSearch(currentMac);
-        tableBean = listTable.get(0);
-        System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
+            //currentMac = "94-DE-80-70-D9-15";
+            //mesa 12
+            //currentMac = "F4-6D-04-90-90-FA";
+            //mesa 5
+            currentMac = "68-17-29-0B-87-6D";
+            listTable = tableService.doTableSearch(currentMac);
+            tableBean = listTable.get(0);
+            System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
 
         // ### 02 ###
-        // Busca Cliente      
-        System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
-      
-        //defino um usuário temporário
-        listClient = clientService.doLogin("admin", "admin");
-        clientBean = listClient.get(0);
+            // Busca Cliente      
+            System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
 
-        listaMovimento = movimentoService.listarMovimentos(listClient.get(0).getCodigo(), tableBean.getNumero());
-        System.out.println("tamanho da lista: " + listaMovimento.size());
+            //defino um usuário temporário
+            listClient = clientService.doLogin("admin", "admin");
+            clientBean = listClient.get(0);
+
+            listaMovimento = movimentoService.listarMovimentos(listClient.get(0).getCodigo(), tableBean.getNumero());
+            System.out.println("tamanho da lista: " + listaMovimento.size());
 
         // ### 03 ###
-        // Valida dados do Cliente
-        
-
+            // Valida dados do Cliente
             System.out.println("[CLIENT CONTROLLER][03] Cliente encontrado!");
             System.out.println("[CLIENT CONTROLLER][03] Preparando seção...");
 
@@ -299,24 +298,24 @@ public class ClientController {
                 System.out.println("[CLIENT CONTROLLER] ERRO: Não foi possível encontrar a página especificada.");
                 System.out.println(ex.getMessage());
             }
- 
+
         } catch (Exception ex) {
             System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
-          
+
         }
-    
-        
+
     }
-    
+
     public void recarregarMovimentos() {
         SessionService sessionService = new SessionService();
         MovimentoService movimentoService = new MovimentoService();
         listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
         System.out.println("tamanho da lista: " + listaMovimento.size());
-        try {  
+        try {
             listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
             sessionBean = listSession.get(0);
+            System.out.println("VALORRRR" + sessionBean.getTotal());
         } catch (ExceptionDAO ex) {
             Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -343,7 +342,7 @@ public class ClientController {
             s.invalidate();
             FacesContext ctx = FacesContext.getCurrentInstance();
             try {
-                 FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
             } catch (IOException ex) {
                 Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -351,7 +350,7 @@ public class ClientController {
 
             for (int i = 0; i < listaMovimento.size(); i++) {
 
-                if ((listaMovimento.get(i).getItemStatus().equals("Entregue")) && sessionBean.isStatus() == false)  {
+                if ((listaMovimento.get(i).getItemStatus().equals("Entregue")) && sessionBean.isStatus() == false) {
                     contaStatus = true;
                 } else {
 
@@ -389,11 +388,25 @@ public class ClientController {
         System.out.println("entro no metodo");
         ClientService clientService = new ClientService();
         System.out.println(clientBean.getCodigo());
+        ValidarCpf validaCPF = new ValidarCpf();
+       
+        if (validaCPF.isCPF(clientBean.getCpf().replace(".", "").replace("-", "")) == false) {
+            System.out.println("cpf digitado" + clientBean.getCpf());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Número de CPF inválido"));
+            return;
 
-        if (clientService.salvar(clientBean) != null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Informações salvas!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro inesperado, por favor tente novamente."));
+
+            if (clientService.salvar(clientBean) != null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Informações salvas!"));
+                try {
+                    goTo("/index.xhtml");
+                } catch (IOException ex) {
+                    Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro inesperado, por favor tente novamente."));
+            }
         }
     }
 
@@ -567,6 +580,5 @@ public class ClientController {
     public void setListSession(List<SessionBean> listSession) {
         this.listSession = listSession;
     }
-    
 
 }
