@@ -223,7 +223,7 @@
 
 
                                         <p:column style="width:60px;">  
-                                            <p:commandButton class="btn btn-default btn-xs bt_fix_add" onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()"  value="-" actionListener="#{menuController.deletar(itemSelecionado)}" update=":frmP"  />
+                                            <p:commandButton class="btn btn-default btn-xs bt_fix_add" onsuccess="PF('statusDialog').hide()" onstart="PF('statusDialog').show()"  value="-" actionListener="#{menuController.deletar(itemSelecionado)}" update=":frmP" ajax="false"  />
                                         </p:column>                                               
                                     </p:dataTable>
                                 </div>                                

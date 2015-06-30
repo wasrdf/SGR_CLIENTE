@@ -108,8 +108,8 @@ public class MenuController {
     public void solicitarCancelamento(MovimentoBean pMovimento) {
         ContaItemService contaItemService = new ContaItemService();
 
-        if (pMovimento.getItemStatus().equals("Entregue")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Você não pode cancelar o item pois o mesmo já foi entregue.", ""));
+        if (!pMovimento.getItemStatus().equals("Solicitado")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode cancelar o item pois o mesmo já foi entregue.", ""));
         } else {
 
             contaItemBean.setCodigo(pMovimento.getContaItemCodigo());
@@ -169,15 +169,13 @@ public class MenuController {
     public void deletar(ItemBean pItem) {
         // orderBuilderItem.setQuantidade(0);
         
-      
-            
             if(pItem.getQuantidade() == 1) {
+                subTotal = subTotal - pItem.getPreco();
+               orderBuilderList.remove(pItem);
                
-                subTotal = subTotal - pItem.getPreco();
-                orderBuilderList.remove(pItem);
             } else {
-                pItem.setQuantidade(pItem.getQuantidade() - 1);
                 subTotal = subTotal - pItem.getPreco();
+                pItem.setQuantidade(pItem.getQuantidade() - 1);
       
         }
         
