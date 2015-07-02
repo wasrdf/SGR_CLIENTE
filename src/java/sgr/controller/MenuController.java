@@ -178,10 +178,7 @@ public class MenuController {
                 pItem.setQuantidade(pItem.getQuantidade() - 1);
       
         }
-        
-        
-        
-
+     
     }
 
     public void chamarGarcom() {
