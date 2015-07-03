@@ -54,7 +54,7 @@ public class MenuController {
     private List<SessionBean> listSession = new ArrayList<SessionBean>();
 
     private ContaItemBean contaItemBean = new ContaItemBean();
-    
+
     // Lists
     private List<ItemBean> itemTypes = new ArrayList<ItemBean>();
     private List<ItemBean> itemList = new ArrayList<ItemBean>();
@@ -87,14 +87,15 @@ public class MenuController {
 
             tableBean.setNumero(clientLogado.tableBean.getNumero());
             tableBean.setFlag("Solicitado");
+            tableBean.setStatus(true);
             tableDAO.gerenciarMesas(tableBean);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
-             
+
         } else {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
-                
+
         }
 
     }
@@ -116,10 +117,10 @@ public class MenuController {
             System.out.println("codigo do item: " + contaItemBean.getItemCodigo());
             contaItemBean.setStatus("Cancelamento");
             if (contaItemService.solicitarCancelamento(contaItemBean) != null) {
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sua solicitação de cancelamento foi enviada para o caixa favor aguardar alguns instantes.", ""));
-              clientLogado.recarregarMovimentos();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sua solicitação de cancelamento foi enviada para o caixa favor aguardar alguns instantes.", ""));
+                clientLogado.recarregarMovimentos();
             } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocorreu um erro inesperado ao tentar cancelar o item selecionado por favor tente novamente.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocorreu um erro inesperado ao tentar cancelar o item selecionado por favor tente novamente.", ""));
             }
 
         }
@@ -133,25 +134,23 @@ public class MenuController {
 
     public void addOrderItem(ItemBean pItem) throws ExceptionDAO {
         boolean encontrou = false;
-        //orderBuilderItem = pItem;
-      
+
         for (int i = 0; i < orderBuilderList.size(); i++) {
-            System.out.println(orderBuilderList.get(i).getQuantidade()+" - " + pItem.getQuantidade());
+
             if (orderBuilderList.get(i).getCodigo() == pItem.getCodigo()) {
                 orderBuilderList.get(i).setQuantidade(orderBuilderList.get(i).getQuantidade() + 1);
+
                 subTotal = subTotal + (orderBuilderList.get(i).getPreco());
-                
+                System.out.println("Enontrou");
                 encontrou = true;
             }
 
         }
-        if (encontrou == true) {
-            orderBuilderList.remove(pItem);
-            orderBuilderList.add(pItem);
 
-        } else {
+        if (encontrou == false) {
+            System.out.println("Não Encontrou");
             pItem.setQuantidade(1);
-            subTotal =  subTotal + pItem.getPreco();
+            subTotal = subTotal + pItem.getPreco();
             orderBuilderList.add(pItem);
 
         }
@@ -168,17 +167,17 @@ public class MenuController {
     // <editor-fold desc="GET and SET">
     public void deletar(ItemBean pItem) {
         // orderBuilderItem.setQuantidade(0);
-        
-            if(pItem.getQuantidade() == 1) {
-                subTotal = subTotal - pItem.getPreco();
-               orderBuilderList.remove(pItem);
-               
-            } else {
-                subTotal = subTotal - pItem.getPreco();
-                pItem.setQuantidade(pItem.getQuantidade() - 1);
-      
+
+        if (pItem.getQuantidade() == 1) {
+            subTotal = subTotal - pItem.getPreco();
+            orderBuilderList.remove(pItem);
+
+        } else {
+            subTotal = subTotal - pItem.getPreco();
+            pItem.setQuantidade(pItem.getQuantidade() - 1);
+
         }
-     
+
     }
 
     public void chamarGarcom() {
@@ -213,12 +212,11 @@ public class MenuController {
             contaItemBean.setClienteCodigo(clientLogado.getClientBean().getCodigo());
             contaItemBean.setClienteCpf(clientLogado.getClientBean().getCpf());
             contaItemBean.setMesaNumero(clientLogado.getTableBean().getNumero());
-            tableBean.setNumero(clientLogado.getTableBean().getNumero());
-
-            tableBean.setStatus(true);
-
-            TableDAO tableDAO = new TableDAO();
-            tableDAO.gerenciarMesas(tableBean);
+            /* tableBean.setNumero(clientLogado.getTableBean().getNumero());
+             tableBean.setStatus(true);
+             TableDAO tableDAO = new TableDAO();
+             tableDAO.gerenciarMesas(tableBean);
+             */
             System.out.println("MESA FUNCIONARIO_CODIGO:" + clientLogado.getTableBean().getFuncionarioCodigo());
             System.out.println("MESA FUNCIONARIO_CPF:" + clientLogado.getTableBean().getFuncionarioCpf());
             contaItemBean.setFuncionarioCodigo(clientLogado.getTableBean().getFuncionarioCodigo());
@@ -245,9 +243,9 @@ public class MenuController {
 
             SessionDAO sessionDAO = new SessionDAO();
             //aqui eu calculo o valor total da conta
-            clientLogado.sessionBean.setTotal(clientLogado.sessionBean.getTotal() +subTotal);
+            clientLogado.sessionBean.setTotal(clientLogado.sessionBean.getTotal() + subTotal);
             sessionDAO.calcularTotal(clientLogado.sessionBean);
-            
+
             MovimentoService movimentoService = new MovimentoService();
             //aqui eu recarrego a lista da pagina principal a lista Meus Pedidos
             clientLogado.listaMovimento = movimentoService.listarMovimentos(clientLogado.getClientBean().getCodigo(), clientLogado.getTableBean().getNumero());

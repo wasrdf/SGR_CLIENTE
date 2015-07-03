@@ -29,6 +29,7 @@ import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
 import sgr.bean.ContaItemBean;
 import sgr.dao.ExceptionDAO;
+import sgr.dao.TableDAO;
 import sgr.service.MovimentoService;
 import sgr.service.SessionService;
 import sgr.service.TableService;
@@ -95,12 +96,18 @@ public class ClientController {
             //mesa 7
             //currentMac = "94-DE-80-70-D9-15";
             //mesa 12
-            //currentMac = "F4-6D-04-90-90-FA";
+            currentMac = "F4-6D-04-90-90-FA";
             //mesa 5
-            currentMac = "68-17-29-0B-87-6D";
+            //currentMac = "68-17-29-0B-87-6D";
             listTable = tableService.doTableSearch(currentMac);
             tableBean = listTable.get(0);
             System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
+
+            //aqui eu abro a MESA...
+            tableBean.setStatus(true);
+            System.out.println("MESA EM ABERTO: " + tableBean.getNumero());
+            TableDAO tableDAO = new TableDAO();
+            tableDAO.gerenciarMesas(tableBean);
 
             // ### 02 ###
             // Busca Cliente      
@@ -311,10 +318,10 @@ public class ClientController {
         SessionService sessionService = new SessionService();
         MovimentoService movimentoService = new MovimentoService();
         try {
-        listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
-        listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
-        sessionBean = listSession.get(0);
-     
+            listaMovimento = movimentoService.listarMovimentos(clientBean.getCodigo(), tableBean.getNumero());
+            listSession = sessionService.doOpenedSessionInfoSearch(clientBean.getCodigo(), 1);
+            sessionBean = listSession.get(0);
+
         } catch (ExceptionDAO ex) {
             Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -327,6 +334,7 @@ public class ClientController {
     // a conta e seção atual.
     public void doLogout() throws SQLException, ExceptionDAO, ClassNotFoundException {
 
+        TableDAO tableDAO = new TableDAO();
         SessionService sessionService = new SessionService();
         FacesContext fc = FacesContext.getCurrentInstance();
         MovimentoService movimentoService = new MovimentoService();
@@ -342,6 +350,10 @@ public class ClientController {
             FacesContext ctx = FacesContext.getCurrentInstance();
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+                tableBean.setStatus(false);
+                tableBean.setFlag("");
+                tableDAO.gerenciarMesas(tableBean);
+
             } catch (IOException ex) {
                 Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -366,6 +378,11 @@ public class ClientController {
                 s.invalidate();
                 FacesContext ctx = FacesContext.getCurrentInstance();
                 try {
+                    
+                    tableBean.setStatus(false);
+                    tableBean.setFlag("");
+                    tableDAO.gerenciarMesas(tableBean);
+
                     FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
                 } catch (IOException ex) {
                     Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
