@@ -50,6 +50,31 @@ public class MovimentoService {
         
         return movimentos;
     }
+   
     
+     public List<MovimentoBean> listarHistorico(int pCliente) {
+        List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
+        QueryBuilder query = new QueryBuilder();
+        
+        query.addQuery(QueryOperation.empty, "vw_movimento.cliente_codigo", QueryGender.equal, String.valueOf(pCliente), QueryType.number);
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.different, "CANCELADO", QueryType.text);
+        
+        MovimentoDAO movimentoDAO = new MovimentoDAO();
+        
+        try {
+            System.out.println("[movimentoservice] listando movimentos....");
+            movimentos = movimentoDAO.listaMovimentos(query);
+        } catch (ExceptionDAO ex) {
+            System.out.println("erro ao tentar listar movimentos motivo: " + ex.getMessage());
+            Logger.getLogger(MovimentoService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            System.out.println("erro ao tentar listar movimentos: " + ex.getSQLState());
+            Logger.getLogger(MovimentoService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return movimentos;
+    }
+   
    
 }

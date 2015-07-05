@@ -37,7 +37,6 @@ import sgr.util.Validacoes;
 
 @SessionScoped
 @ManagedBean(name = "clientController")
-
 public class ClientController {
 
     /* VARIAVEIS */
@@ -68,9 +67,10 @@ public class ClientController {
     List<ClientBean> listClient = new ArrayList<ClientBean>();
     List<TableBean> listTable = new ArrayList<TableBean>();
     List<SessionBean> listSession = new ArrayList<SessionBean>();
-
+    
     private List<ContaItemBean> orderItemList = new ArrayList<ContaItemBean>();
     List<MovimentoBean> listaMovimento = new ArrayList<MovimentoBean>();
+    List<MovimentoBean> listaHistorico = new ArrayList<MovimentoBean>();
 
     /* MÉTODOS */
     // MÉTODO 01 - doLogin()
@@ -87,18 +87,34 @@ public class ClientController {
         // Inicia HTTPSession
         session = (HttpSession) ctx.getExternalContext().getSession(false);
         try {
+
             // ### 01 ###
+            // Busca Cliente      
+            System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
+
+            listClient = clientService.doLogin(clientUsername, clientPassword);
+            clientBean = listClient.get(0);
+
+            // ### 02 ###
             // Identifica Mesa        
             //currentMac = MACReader.readMAC();
             System.out.println("[CLIENT CONTROLLER][01] MAC atual para execução em doTableSearch(): '" + currentMac + "'.");
             System.out.println("MINHA MAC = :" + currentMac);
 
-            //mesa 7
-            //currentMac = "94-DE-80-70-D9-15";
-            //mesa 12
-            currentMac = "F4-6D-04-90-90-FA";
-            //mesa 5
-            //currentMac = "68-17-29-0B-87-6D";
+            if (clientBean.getCodigo() == 7) {
+                //mesa 12
+                currentMac = "F4-6D-04-90-90-FA";
+            } else {
+                if (clientBean.getCodigo() == 10) {
+                    //mesa 7
+                    currentMac = "94-DE-80-70-D9-15";
+
+                } else {
+                    //mesa 5
+                    currentMac = "68-17-29-0B-87-6D";
+
+                }
+            }
             listTable = tableService.doTableSearch(currentMac);
             tableBean = listTable.get(0);
             System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
@@ -109,16 +125,10 @@ public class ClientController {
             TableDAO tableDAO = new TableDAO();
             tableDAO.gerenciarMesas(tableBean);
 
-            // ### 02 ###
-            // Busca Cliente      
-            System.out.println("[CLIENT CONTROLLER][02] Dados do cliente para execução em doLogin():  clientUsername '" + clientUsername + "' e clientPassword '" + clientPassword + "'.");
-
-            listClient = clientService.doLogin(clientUsername, clientPassword);
-            clientBean = listClient.get(0);
-
             listaMovimento = movimentoService.listarMovimentos(listClient.get(0).getCodigo(), tableBean.getNumero());
             System.out.println("tamanho da lista: " + listaMovimento.size());
 
+            
             // ### 03 ###
             // Valida dados do Cliente
             if (clientUsername.equals(clientBean.getNome_usuario()) && (clientPassword.equals(clientBean.getSenha()))) {
@@ -189,19 +199,24 @@ public class ClientController {
 
             } else {
                 System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
 
             }
 
         } catch (Exception ex) {
             System.out.println("[CLIENT CONTROLLER] User not found or invalid access data.");
+            //FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
-
         }
 
     }
 
+    public void listarHistorico() {
+        MovimentoService movimentoService = new MovimentoService();
+        listaHistorico = movimentoService.listarHistorico(clientBean.getCodigo());
+    }
+    
     public void entrarTemporario() {
 
         // Inicia Services
@@ -228,6 +243,12 @@ public class ClientController {
             listTable = tableService.doTableSearch(currentMac);
             tableBean = listTable.get(0);
             System.out.println("[CLIENT CONTROLLER][01] Mesa identificada: '" + tableBean.getNumero() + "'.");
+
+            //aqui eu abro a MESA...
+            tableBean.setStatus(true);
+            System.out.println("MESA EM ABERTO: " + tableBean.getNumero());
+            TableDAO tableDAO = new TableDAO();
+            tableDAO.gerenciarMesas(tableBean);
 
             // ### 02 ###
             // Busca Cliente      
@@ -378,10 +399,6 @@ public class ClientController {
                 s.invalidate();
                 FacesContext ctx = FacesContext.getCurrentInstance();
                 try {
-                    
-                    tableBean.setStatus(false);
-                    tableBean.setFlag("");
-                    tableDAO.gerenciarMesas(tableBean);
 
                     FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
                 } catch (IOException ex) {
@@ -420,6 +437,12 @@ public class ClientController {
 
                 if (clientService.salvar(clientBean) != null) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Informações salvas!"));
+                     FacesContext ctx = FacesContext.getCurrentInstance();
+                    try {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+                    } catch (IOException ex) {
+                        Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     clientBean = new ClientBean();
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro inesperado, por favor tente novamente."));
@@ -599,4 +622,13 @@ public class ClientController {
         this.listSession = listSession;
     }
 
+    public List<MovimentoBean> getListaHistorico() {
+        return listaHistorico;
+    }
+
+    public void setListaHistorico(List<MovimentoBean> listaHistorico) {
+        this.listaHistorico = listaHistorico;
+    }
+
+    
 }

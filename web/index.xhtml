@@ -55,24 +55,18 @@
 
                                     <!-- @ Buttons -->
                                     <div class="btn-group" role="group" aria-label="...">
-                                        <h:commandButton class="btn btn-default" value="Entrar" actionListener="#{clientController.doLogin}"  />
-                                        <h:commandButton class="btn btn-default" value="Entrar como Temporário" actionListener="#{clientController.entrarTemporario}" />
+                                        <p:commandButton class="btn btn-default" ajax="false" value="Entrar" actionListener="#{clientController.doLogin}"  />
+                                        <p:commandButton class="btn btn-default" ajax="false" value="Conta Temporária" actionListener="#{clientController.entrarTemporario}" />
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                Recuperar Senha
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#">Enviar por E-mail</a></li>
-                                                <li><a href="#">Enviar por SMS</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">Solicitar ao Garçom</a></li> 
-                                            </ul>
+                                            <p:commandButton value="Recuperar Senha" type="button" class="btn btn-default dropdown-toggle" >
+                                               
+                                                </p:commandButton>
+                                          
                                         </div>
                                     </div>
 
 
-                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#signupModal"><i class="fa fa-user-plus"></i> Faça seu Cadastro</button>
+                                    <button style="height: 43px" class="btn btn-default" type="button" data-toggle="modal" data-target="#signupModal"><i class="fa fa-user-plus"></i> Faça seu Cadastro</button>
                                 </h:form>
                                 <p style="margin-top: 10px;">
                                     <span class="sgrc"><b>Novo no SGR?!</b></span> Cadastre-se e descubra as vantagens de ter sua própria conta conosco!
@@ -89,12 +83,19 @@
                                             </div>
                                             <div class="modal-body">
                                                 <h4>Olá cliente!</h4>
-                                                <p>Agradecemos a preferência e disposição de fazer e ter seu próprio cadastro! Pedimos para que por favor realize o mesmo com informações válidas
-                                                    para que possamos melhor atender-lo.</p>
+                                                <p>Agradecemos a preferência e sua eventual disponibilidade para realizar seu próprio cadastro
+                                                    neste sistema, afim de que possamos prestar um atendimento personalizado.
+                                                    Caso não queira se cadastrar, ainda sim poderá utilizar nosso sistema para realizar seus pedidos com uma conta temporária.
+                                                   
+                                                </p>
+                                                <br/>
+                                                <p> 
+                                                    Deseja se cadastrar?
+                                                </p>    
 
                                             </div>
                                             <div class="modal-footer">
-                                                <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button><h:commandButton class="btn btn-default" value="Continuar para o Cadastro" actionListener="#{clientController.goTo('/signup.xhtml')}"/></h:form>
+                                                <h:form><button type="button" class="btn btn-default" data-dismiss="modal">Não</button><h:commandButton class="btn btn-default" value="Sim" actionListener="#{clientController.goTo('/signup.xhtml')}"/></h:form>
                                             </div>
                                         </div>
                                     </div>

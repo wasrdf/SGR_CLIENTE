@@ -1,9 +1,3 @@
-/*
- SGR ALPHA - CONTROLLER PACKAGE
- File: MENUCONTROLLER.JAVA | Last Major Update: 25.05.2015
- Developer: Kevin Raian e Rafael Sousa
- IDINALOG REBORN © 2015
- */
 package sgr.controller;
 
 import java.io.IOException;
@@ -90,7 +84,7 @@ public class MenuController {
             tableBean.setStatus(true);
             tableDAO.gerenciarMesas(tableBean);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,por favor aguarde alguns instantes.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,porfavor aguarde alguns instantes.", ""));
 
         } else {
 
@@ -110,7 +104,7 @@ public class MenuController {
         ContaItemService contaItemService = new ContaItemService();
 
         if (!pMovimento.getItemStatus().equals("Solicitado")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode cancelar o item pois o mesmo já foi entregue.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Este item já foi entregue, caso tenha ocorrido algum problema,por favor chame o garçom.", ""));
         } else {
 
             contaItemBean.setCodigo(pMovimento.getContaItemCodigo());
@@ -152,7 +146,6 @@ public class MenuController {
             pItem.setQuantidade(1);
             subTotal = subTotal + pItem.getPreco();
             orderBuilderList.add(pItem);
-
         }
 
     }
@@ -183,7 +176,8 @@ public class MenuController {
     public void chamarGarcom() {
         TableDAO tableDAO = new TableDAO();
         tableBean.setNumero(clientLogado.tableBean.getNumero());
-        tableBean.setFlagGarcom("SOLICITADO");
+        tableBean.setFlagGarcom("Solicitado");
+        tableBean.setStatus(true);
         tableDAO.gerenciarMesas(tableBean);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação enviada para o garçom,em breve iremos atende-lo", ""));
     }

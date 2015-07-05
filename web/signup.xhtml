@@ -132,13 +132,44 @@
                                         <p:inputText id="clientCity" type="text" class="form-control" value="#{clientController.clientBean.cidade}"/>
                                     </div>
                                     <div class="form-group col-xs-4">
-                                        <label for="state">Estado</label>
-                                        <p:inputText id="clientState" type="text" class="form-control" value="#{clientController.clientBean.estado}"/>
-                                    </div>
-                                    <div class="form-group col-xs-4">
                                         <label for="neighborhood">Bairro</label>
                                         <p:inputText id="clientNeighborhood" type="text" class="form-control" value="#{clientController.clientBean.bairro}"/>
                                     </div>
+
+                                    <div class="form-group col-xs-4">
+                                        <label for="state">Estado</label>
+                                        <h:selectOneMenu value="#{clientController.clientBean.estado}"  >
+                                            <f:selectItem itemLabel="Acre" itemValue="Acre" />
+                                            <f:selectItem itemLabel="Alagoas" itemValue="Alagoas" />
+                                            <f:selectItem itemLabel="Amapá" itemValue="Amapá" />
+                                            <f:selectItem itemLabel="Amazonas" itemValue="Amazonas" />
+                                            <f:selectItem itemLabel="Bahia" itemValue="Bahia" />
+                                            <f:selectItem itemLabel="Ceara" itemValue="Ceara" />
+                                            <f:selectItem itemLabel="Distrito Federal" itemValue="Distrito Federal" />
+                                            <f:selectItem itemLabel="Espirito Santo" itemValue="Espirito Santo" />
+                                            <f:selectItem itemLabel="Goiais" itemValue="Goais" />
+                                            <f:selectItem itemLabel="Maranhão" itemValue="Maranhão" />
+                                            <f:selectItem itemLabel="Mato Grosso" itemValue="Mato Grosso" />
+                                            <f:selectItem itemLabel="Mato Grosso do Sul" itemValue="Mato Grosso do Sul" />
+                                            <f:selectItem itemLabel="Minas Gerais" itemValue="Minas Gerais" />
+                                            <f:selectItem itemLabel="Para" itemValue="Para" />
+                                            <f:selectItem itemLabel="Paraiba" itemValue="Paraiba" />
+                                            <f:selectItem itemLabel="Parana" itemValue="Parana" />
+                                            <f:selectItem itemLabel="Pernambuco" itemValue="Pernambuco" />
+                                            <f:selectItem itemLabel="Piaui" itemValue="Piaui" />
+                                            <f:selectItem itemLabel="Rio de Janeiro" itemValue="Rio de Janeiro" />
+                                            <f:selectItem itemLabel="Rio Grande do Norte" itemValue="Rio Grande do Norte" />
+                                            <f:selectItem itemLabel="Rio Grande do Sul" itemValue="Rio Grande do Sul" />
+                                            <f:selectItem itemLabel="Rondônia" itemValue="Rondônia" />
+                                            <f:selectItem itemLabel="Roraima" itemValue="Roraima" />
+                                            <f:selectItem itemLabel="Santa Catarina" itemValue="Santa Catarina" />
+                                            <f:selectItem itemLabel="São Paulo" itemValue="São Paulo" />
+                                            <f:selectItem itemLabel="Sergipe" itemValue="Sergipe" />
+                                            <f:selectItem itemLabel="Tocantins" itemValue="Tocantins" />
+                                        </h:selectOneMenu>
+                                    </div>
+
+
 
                                 </div>
                                 <h2>Dados de Acesso</h2>
@@ -183,7 +214,7 @@
                                     <div class="modal-body">
                                         <h4>Estamos quase lá!</h4>
                                         <p>Obrigado pela paciência! Gostariamos de informar que seus dados de endereço serão utilizados futuramente por nosso sistema de delivery para chegar até você!
-                                            Seu e-mail estará seguro conosco e será utilizado para fins promocionais e para recuperação de sua senha. Se todos seus dados estiverem corretos por favor siga em frente!</p>
+                                            Seu e-mail estará seguro conosco e será utilizado para fins promocionais. Se todos seus dados estiverem corretos por favor siga em frente!</p>
 
                                     </div>
                                     <div class="modal-footer">

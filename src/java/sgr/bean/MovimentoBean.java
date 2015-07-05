@@ -5,6 +5,8 @@
  */
 package sgr.bean;
 
+import java.util.Date;
+
 /**
  *
  * @author WASHINGTON
@@ -23,7 +25,16 @@ public class MovimentoBean {
     private double preco;
     private int itemCodigo;
     private int contaItemCodigo;
+    private Date data;
 
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+    
     
     public int getContaItemCodigo() {
         return contaItemCodigo;

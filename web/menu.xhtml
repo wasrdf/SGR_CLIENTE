@@ -30,79 +30,8 @@
     </h:head>
 
     <h:body style="padding-top: 70px; padding-bottom: 70px;">
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-
-                    <!-- [I] Logo -->                
-                    <a class="navbar-brand" href="#">
-                        <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
-                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
-                    </a>
-
-                    <!-- [F] Exibição do Usuário -->
-                    <p class="navbar-text" >Olá, <b>#{clientController.clientBean.nome}</b>!</p>     
-                    <p class="navbar-text">Mesa <span class="badge">#{clientController.tableBean.numero}</span></p>
-                </div>
-
-                <!-- [F] Informações -->
-                <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
-                                                                        aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock"></span></b></p>               
-
-                <!-- [S] Script Hora -->
-                <script type="text/javascript">
-                    //<![CDATA[
-                    function clock()
-                    {
-                        var digital = new Date();
-                        var hours = digital.getHours();
-                        var minutes = digital.getMinutes();
-                        var seconds = digital.getSeconds();
-                        if (minutes <= 9)
-                            minutes = "0" + minutes;
-                        if (seconds <= 9)
-                            seconds = "0" + seconds;
-                        dispTime = hours + ":" + minutes + ":" + seconds;
-                        var basicclock = document.getElementById('basicclock');
-                        basicclock.innerHTML = dispTime;
-                        setTimeout("clock()", 1000);
-                    }
-                    clock();
-                    //]]>
-                </script>                    
-
-                <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
-                                                                       aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate"></span></b></p>
-
-                <!-- [S] Script Data -->
-                <script type="text/javascript">
-                    //<![CDATA[
-                    var now = new Date();
-                    var days = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
-                    var months = new Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
-                    var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
-                    var year = (now.getYear() < 1000) ? now.getYear() + 1900 : now.getYear();
-                    today = days[now.getDay()] + ", " + date + " de " + months[now.getMonth()] + ", " + year;
-                    var basicdate = document.getElementById('basicdate');
-                    basicdate.innerHTML = today;
-                    //]]>
-                </script>
-
-                <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
-
-                    <!-- [I] Configurações -->
-                    <li><h:form>
-                            <h:commandButton class="btn btn-default" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}"/>
-
-
-                            <!-- [I] Logout Button -->
-                            <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">Sair</button>
-                        </h:form></li>
-                </ul>       
-
-            </div>                 
-        </nav>
-
+     
+             <ui:include src="masterheader.xhtml" />        
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

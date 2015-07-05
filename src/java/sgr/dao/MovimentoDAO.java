@@ -48,6 +48,7 @@ public class MovimentoDAO {
             movimento.setPreco(rs.getDouble("preco"));
             movimento.setItemCodigo(rs.getInt("item_codigo"));
             movimento.setContaItemCodigo(rs.getInt("conta_item_codigo"));
+            movimento.setData(rs.getDate("data"));
             
             movimentos.add(movimento);
         }
