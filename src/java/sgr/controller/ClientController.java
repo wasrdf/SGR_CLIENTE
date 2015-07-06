@@ -24,6 +24,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import sgr.bean.MovimentoBean;
 import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
@@ -436,14 +437,11 @@ public class ClientController {
             } else {
 
                 if (clientService.salvar(clientBean) != null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Informações salvas!"));
+                    
                      FacesContext ctx = FacesContext.getCurrentInstance();
-                    try {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
-                    } catch (IOException ex) {
-                        Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    clientBean = new ClientBean();
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente foi cadastrado com sucesso! ", ""));
+                   
+                     clientBean = new ClientBean();
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro inesperado, por favor tente novamente."));
                 }

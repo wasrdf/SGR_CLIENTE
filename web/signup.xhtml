@@ -177,7 +177,9 @@
                                     <label for="username">Nome de Usuário</label>
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-                                        <p:inputText id="clientUsername" type="text" class="form-control" value="#{clientController.clientBean.nome_usuario}"/>
+                                        <p:inputText requiredMessage="Login obrigatorio" required="true" id="clientUsername" type="text" class="form-control" value="#{clientController.clientBean.nome_usuario}">
+                                            <f:validateLength minimum="2" for="clientUsername" />
+                                        </p:inputText>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-2">
@@ -198,9 +200,9 @@
 
                             </div>
                         </div>
-                        <p:messages showDetail="true"   style="color: red;font-weight: bold" /> 
+                        <p:messages    style="color: red;font-weight: bold" /> 
                         <div class="panel-footer">
-                            <h:commandButton type="button" class="btn btn-default" value="Cancelar" >
+                            <h:commandButton type="button" class="btn btn-default" value="Voltar" >
                                 <f:ajax listener="#{clientController.goTo('/index.xhtml')}" />
                             </h:commandButton>
                             <button type="button" data-toggle="modal" data-target="#signupFinalModal" class="btn btn-success" style="float:right;">Finalizar Cadastro</button>
@@ -230,7 +232,7 @@
             </div>
         </div>
 
-
+         
 
     </h:body>
 
