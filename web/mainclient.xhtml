@@ -58,7 +58,7 @@
                                     <div class="table-responsive">   
 
                                         <!-- @ UPDATER -->
-                                        <p:poll interval="30" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
+                                        <p:poll interval="10" listener="#{clientController.recarregarMovimentos()}" update="movimento" />
 
                                         <p:dataTable tableStyleClass="table table-striped" id="movimento" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{clientController.listaMovimento}">
 

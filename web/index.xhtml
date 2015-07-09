@@ -54,7 +54,7 @@
                                         <p:commandButton class="btn btn-default" ajax="false" value="Entrar" actionListener="#{clientController.doLogin}"  />
                                         <p:commandButton class="btn btn-default" ajax="false" value="Conta Temporária" actionListener="#{clientController.entrarTemporario}" />
                                         <div class="btn-group" role="group">
-                                            <p:commandButton value="Recuperar Senha" type="button" class="btn btn-default dropdown-toggle" >
+                                            <p:commandButton actionListener="#{clientController.goTo('/recoveryPassword.xhtml')}" value="Recuperar Senha"  class="btn btn-default dropdown-toggle" >
                            
                                             </p:commandButton>
                                           
