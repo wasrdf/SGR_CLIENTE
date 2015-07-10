@@ -87,9 +87,12 @@ public class MenuController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação de encerramento foi encaminhada para o caixa,porfavor aguarde alguns instantes.", ""));
 
         } else {
+            if (clientLogado.listaMovimento.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Para solicitar o encerramento é necessário escolher pelo menos um item do cardapio.", ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode solicitar o encerramento pois existem itens que ainda não foram entregues.", ""));
-
+            }
         }
 
     }

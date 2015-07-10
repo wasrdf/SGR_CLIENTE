@@ -24,12 +24,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 import sgr.bean.MovimentoBean;
 import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
 import sgr.bean.ContaItemBean;
 import sgr.dao.ExceptionDAO;
+import sgr.dao.SessionDAO;
 import sgr.dao.TableDAO;
 import sgr.service.MovimentoService;
 import sgr.service.SessionService;
@@ -375,7 +375,10 @@ public class ClientController {
                 tableBean.setStatus(false);
                 tableBean.setFlag("");
                 tableDAO.gerenciarMesas(tableBean);
-
+                SessionDAO sessionDAO = new SessionDAO();
+                sessionBean.setStatus(false);
+                sessionDAO.alterarConta(sessionBean);
+                
             } catch (IOException ex) {
                 Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -449,6 +452,17 @@ public class ClientController {
         }
     }
 
+    public void salvar() {
+        ClientService clientService = new ClientService();
+        try {
+            
+        clientService.salvar(clientBean);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Informações armazenadas com sucesso."));
+        } catch (Exception e) {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Ocorreu um erro inesperado, por favor tente novamente."));
+        }
+    }
+    
     public void pedidoSelecionado(MovimentoBean pMovimento) {
         System.out.println("entrou no metodo...");
         movimento = pMovimento;

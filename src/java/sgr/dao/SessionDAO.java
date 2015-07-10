@@ -161,4 +161,26 @@ public class SessionDAO {
             return 0;
         }
     }
+    
+    
+    public void alterarConta(SessionBean pSessionBean) {
+        ConnectionBuilder conexao = new ConnectionBuilder();
+        String sql = "update conta set status=? where codigo =?";
+        try {
+            Connection conn = conexao.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setBoolean(1, pSessionBean.isStatus());
+            ps.setInt(2, pSessionBean.getCodigo());
+            ps.execute();
+            ps.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+    }
+    
+    
+    
+    
 }
