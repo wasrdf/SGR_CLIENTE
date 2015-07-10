@@ -42,7 +42,7 @@
                             <div class="panel-body">
                                 <img src="img/cardapio-header.jpg" class="img-responsive panel-image-full"></img>
                                 <h:commandButton class="btn btn-default" value="Consultar Cardápio" actionListener="#{menuController.goTo('/menu.xhtml')}"/>
-                                <h:commandButton style="margin-left: 10px" class="btn btn-default" value="Ver meu histórico" actionListener="#{menuController.goTo('/historico.xhtml')}"/>
+                                <h:commandButton style="margin-left: 10px" class="btn btn-default" value="Histórico de Pedidos" actionListener="#{menuController.goTo('/historico.xhtml')}"/>
                             </div>
                         </div>
 
@@ -118,8 +118,9 @@
                         <!-- [I][P] Painel Direito -->    
                     </div>
                     <div id="abId0.5800432859169298" class="col-md-6 column">
-                        <div class="row clearfix">
-
+                        <div class="row clearfix">                           
+                            
+                            
                             <div class="col-md-6 column">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -130,6 +131,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-md-6 column">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -183,13 +185,18 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <p:messages  class="alert alert-warning" showDetail="true"  style="width:100%"/>
+                                        
 
                                     </div>
                                 </div>
-
-
-                            </div>                            
+                            </div>      
+                            <div class="col-md-12 column">
+                                <div class="panel panel-default">                                   
+                                    <div class="panel-body">
+                                        <p:messages  class="alert alert-warning" showDetail="true"  style="width:100%"/>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
